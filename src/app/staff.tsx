@@ -7,6 +7,7 @@ import { RequestCard } from '../components/RequestCard';
 import { PriorityFilter, RequestFilters, StatusFilter } from '../components/RequestFilters';
 import { useAppState } from '../context/AppStateContext';
 import { filterRequests } from '../utils/filterRequests';
+import { getRequestMetrics } from '../services/requestService';
 
 export default function StaffQueueScreen() {
   const { requests } = useAppState();
@@ -15,6 +16,7 @@ export default function StaffQueueScreen() {
   const [priorityFilter, setPriorityFilter] = useState<PriorityFilter>('All');
 
   const filteredRequests = filterRequests(requests, searchText, statusFilter, priorityFilter);
+  const metrics = getRequestMetrics(requests);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -30,15 +32,15 @@ export default function StaffQueueScreen() {
 
       <View style={styles.statsRow}>
         <View style={styles.statCard}>
-          <Text style={styles.statNumber}>{requests.filter((r) => r.status !== 'Resolved').length}</Text>
+          <Text style={styles.statNumber}>{metrics.open}</Text>
           <Text style={styles.statLabel}>Open</Text>
         </View>
         <View style={styles.statCard}>
-          <Text style={styles.statNumber}>{requests.filter((r) => r.priority === 'High').length}</Text>
+          <Text style={styles.statNumber}>{metrics.highPriority}</Text>
           <Text style={styles.statLabel}>High Priority</Text>
         </View>
         <View style={styles.statCard}>
-          <Text style={styles.statNumber}>{requests.reduce((sum, r) => sum + r.followers, 0)}</Text>
+          <Text style={styles.statNumber}>{metrics.followers}</Text>
           <Text style={styles.statLabel}>Followers</Text>
         </View>
       </View>

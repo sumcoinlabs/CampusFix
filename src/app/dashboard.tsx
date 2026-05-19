@@ -5,6 +5,7 @@ import { MetricCard } from '../components/MetricCard';
 import { RequestCard } from '../components/RequestCard';
 import { RoleBanner } from '../components/RoleBanner';
 import { useAppState } from '../context/AppStateContext';
+import { getRequestMetrics } from '../services/requestService';
 import { AppFooter } from '../components/AppFooter';
 import { CampusFixLogo } from '../components/CampusFixLogo';
 import { PageBrand } from '../components/PageBrand';
@@ -22,9 +23,7 @@ export default function DashboardScreen() {
   const { currentUser, requests, notifications, logout } = useAppState();
 
   const role = currentUser?.role || 'resident';
-  const openRequests = requests.filter((request) => request.status !== 'Resolved').length;
-  const resolved = requests.filter((request) => request.status === 'Resolved').length;
-  const followers = requests.reduce((sum, request) => sum + request.followers, 0);
+  const metrics = getRequestMetrics(requests);
   const featured = requests[0];
 
   function signOut() {
@@ -46,9 +45,9 @@ export default function DashboardScreen() {
       </View>
 
       <View style={styles.metricsGrid}>
-        <MetricCard label="Open Requests" value={openRequests} helper="Updates as staff resolves items" />
-        <MetricCard label="Resolved" value={resolved} helper="Completed local requests" />
-        <MetricCard label="Followers" value={followers} helper="Duplicate reports avoided" />
+        <MetricCard label="Open Requests" value={metrics.open} helper="Updates as staff resolves items" />
+        <MetricCard label="Resolved" value={metrics.resolved} helper="Completed local requests" />
+        <MetricCard label="Followers" value={metrics.followers} helper="Duplicate reports avoided" />
         <MetricCard label="Notifications" value={notifications.length} helper="In-app activity log" />
       </View>
 
@@ -74,7 +73,7 @@ export default function DashboardScreen() {
 
       {role === 'resident' ? (
         <>
-          <HomeButton title="Report an Issue" subtitle="Create a real local request that appears in lists." route="/report" />
+          <HomeButton title="Create New Request" subtitle="Start a new facility request and send it through duplicate check." route="/report" />
           <HomeButton title="My Requests" subtitle="Track local request status and public updates." route="/requests" />
         </>
       ) : (

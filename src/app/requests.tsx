@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { router } from 'expo-router';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { AppFooter } from '../components/AppFooter';
 import { PageBrand } from '../components/PageBrand';
 import { RequestCard } from '../components/RequestCard';
@@ -32,6 +32,10 @@ export default function MyRequestsScreen() {
         <Text style={styles.infoTitle}>{requests.length} Local Requests</Text>
         <Text style={styles.infoText}>Data persists locally on this device/browser.</Text>
       </View>
+
+      <Pressable style={styles.createButton} onPress={() => router.push('/report' as never)}>
+        <Text style={styles.createButtonText}>Create New Request</Text>
+      </Pressable>
 
       <RequestFilters
         searchText={searchText}
@@ -87,6 +91,18 @@ const styles = StyleSheet.create({
     color: '#111827',
     fontWeight: '900',
     fontSize: 17,
+  },
+  createButton: {
+    backgroundColor: '#2563eb',
+    borderRadius: 18,
+    padding: 16,
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  createButtonText: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: '900',
   },
   emptyText: {
     color: '#64748b',

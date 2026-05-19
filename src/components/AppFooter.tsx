@@ -30,7 +30,7 @@ export function AppFooter() {
 
         {!isStaff ? (
           <Pressable style={styles.navButton} onPress={() => router.push('/report' as never)}>
-            <Text style={styles.navText}>Report</Text>
+            <Text style={styles.navText}>New Request</Text>
           </Pressable>
         ) : (
           <Pressable style={styles.navButton} onPress={() => router.push('/staff' as never)}>

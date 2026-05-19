@@ -9,6 +9,14 @@ import {
   UserRole,
 } from '../types';
 import { initialRequests } from '../data/mockRequests';
+import {
+  addRequestUpdate,
+  assignRequestToStaff,
+  buildNewRequest,
+  followExistingRequest,
+  makeId,
+  updateRequestStatus,
+} from '../services/requestService';
 
 type AppState = {
   currentUser: Account | null;
@@ -40,10 +48,6 @@ const AppStateContext = createContext<AppState | undefined>(undefined);
 
 function nowLabel() {
   return new Date().toLocaleString();
-}
-
-function makeId(prefix: string) {
-  return `${prefix}-${Date.now().toString().slice(-6)}`;
 }
 
 export function AppStateProvider({ children }: { children: React.ReactNode }) {
@@ -119,32 +123,7 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
 
   function createRequest(request?: PendingRequest | null) {
     const source = request || pendingRequest;
-
-    const newRequest: CampusRequest = {
-      id: makeId('CF'),
-      title: source?.title || 'New campus facility request',
-      category: source?.category || 'General',
-      location: source?.location || 'Unknown location',
-      description: source?.description || 'No description provided.',
-      status: 'Submitted',
-      priority: source?.priority || 'Medium',
-      reportedBy: currentUser?.name || 'Resident',
-      createdAt: 'Just now',
-      followers: 1,
-      assignee: 'Unassigned',
-      targetResolution: 'Needs review',
-      photoLabel: source?.photoLabel,
-      geoLabel: source?.geoLabel,
-      updates: [
-        {
-          id: makeId('U'),
-          visibility: 'Public',
-          author: 'CampusFix',
-          message: 'Request received and awaiting staff review.',
-          createdAt: nowLabel(),
-        },
-      ],
-    };
+    const newRequest = buildNewRequest(source, currentUser?.name || 'Resident');
 
     setRequests((items) => [newRequest, ...items]);
     setPendingRequest(null);
@@ -153,107 +132,35 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
   }
 
   function followRequest(id: string) {
-    setRequests((items) =>
-      items.map((request) =>
-        request.id === id ? { ...request, followers: request.followers + 1 } : request
-      )
-    );
+    setRequests((items) => followExistingRequest(items, id));
     setPendingRequest(null);
     pushNotification(`You are now following request ${id}.`);
   }
 
   function assignToMe(id: string) {
     setRequests((items) =>
-      items.map((request) =>
-        request.id === id
-          ? {
-              ...request,
-              status: request.status === 'Submitted' ? 'Assigned' : request.status,
-              assignee: currentUser?.name || 'Staff Admin',
-              updates: [
-                ...request.updates,
-                {
-                  id: makeId('U'),
-                  visibility: 'Internal',
-                  author: currentUser?.name || 'Staff Admin',
-                  message: 'Assigned this request for follow-up.',
-                  createdAt: nowLabel(),
-                },
-              ],
-            }
-          : request
-      )
+      assignRequestToStaff(items, id, currentUser?.name || 'Staff Admin')
     );
     pushNotification(`Assigned request ${id}.`);
   }
 
   function updateStatus(id: string, status: RequestStatus) {
     setRequests((items) =>
-      items.map((request) =>
-        request.id === id
-          ? {
-              ...request,
-              status,
-              targetResolution: status === 'Resolved' ? 'Completed' : request.targetResolution,
-              updates: [
-                ...request.updates,
-                {
-                  id: makeId('U'),
-                  visibility: 'Public',
-                  author: currentUser?.name || 'Facilities Team',
-                  message: `Status updated to ${status}.`,
-                  createdAt: nowLabel(),
-                },
-              ],
-            }
-          : request
-      )
+      updateRequestStatus(items, id, status, currentUser?.name || 'Facilities Team')
     );
     pushNotification(`Updated ${id} to ${status}.`);
   }
 
   function addPublicUpdate(id: string, message: string) {
     setRequests((items) =>
-      items.map((request) =>
-        request.id === id
-          ? {
-              ...request,
-              updates: [
-                ...request.updates,
-                {
-                  id: makeId('U'),
-                  visibility: 'Public',
-                  author: currentUser?.name || 'Facilities Team',
-                  message,
-                  createdAt: nowLabel(),
-                },
-              ],
-            }
-          : request
-      )
+      addRequestUpdate(items, id, message, currentUser?.name || 'Facilities Team', 'Public')
     );
     pushNotification(`Posted public update on ${id}.`);
   }
 
   function addInternalNote(id: string, message: string) {
     setRequests((items) =>
-      items.map((request) =>
-        request.id === id
-          ? {
-              ...request,
-              updates: [
-                ...request.updates,
-                {
-                  id: makeId('U'),
-                  visibility: 'Internal',
-                  author: currentUser?.name || 'Staff Admin',
-                  message,
-                  createdAt: nowLabel(),
-                },
-              ],
-            }
-          : request
-      )
+      addRequestUpdate(items, id, message, currentUser?.name || 'Staff Admin', 'Internal')
     );
     pushNotification(`Added internal note on ${id}.`);
   }
