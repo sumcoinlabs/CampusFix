@@ -6,12 +6,30 @@ export const mockRequests: CampusRequest[] = [
     title: 'Broken lights near Parking Lot B',
     category: 'Lighting',
     location: 'Parking Lot B',
-    description: 'Several lights are out near the west side of the parking lot.',
+    description: 'Several lights are out near the west side of the parking lot. The area feels unsafe after dark.',
     status: 'In Progress',
     priority: 'High',
     reportedBy: 'Student',
     createdAt: 'Today',
     followers: 12,
+    assignee: 'Facilities - Evening Crew',
+    targetResolution: 'Tomorrow by 5:00 PM',
+    updates: [
+      {
+        id: 'U-1',
+        visibility: 'Public',
+        author: 'Facilities Team',
+        message: 'The lighting issue has been confirmed and assigned to the evening maintenance crew.',
+        createdAt: 'Today, 10:15 AM',
+      },
+      {
+        id: 'U-2',
+        visibility: 'Internal',
+        author: 'Maintenance Supervisor',
+        message: 'Likely breaker or photocell issue. Bring lift access and replacement bulbs.',
+        createdAt: 'Today, 10:22 AM',
+      },
+    ],
   },
   {
     id: 'CF-1039',
@@ -24,6 +42,24 @@ export const mockRequests: CampusRequest[] = [
     reportedBy: 'Faculty',
     createdAt: 'Yesterday',
     followers: 4,
+    assignee: 'Plumbing Vendor',
+    targetResolution: 'May 21',
+    updates: [
+      {
+        id: 'U-3',
+        visibility: 'Public',
+        author: 'Facilities Team',
+        message: 'A work order has been created and the issue has been assigned.',
+        createdAt: 'Yesterday, 4:40 PM',
+      },
+      {
+        id: 'U-4',
+        visibility: 'Internal',
+        author: 'Facilities Coordinator',
+        message: 'Check whether this is related to last month’s fixture replacement.',
+        createdAt: 'Yesterday, 4:45 PM',
+      },
+    ],
   },
   {
     id: 'CF-1032',
@@ -36,5 +72,46 @@ export const mockRequests: CampusRequest[] = [
     reportedBy: 'Staff',
     createdAt: 'May 17',
     followers: 2,
+    assignee: 'Custodial Team',
+    targetResolution: 'Completed',
+    updates: [
+      {
+        id: 'U-5',
+        visibility: 'Public',
+        author: 'Custodial Team',
+        message: 'Bins were emptied and the area was cleaned.',
+        createdAt: 'May 17, 2:10 PM',
+      },
+    ],
+  },
+  {
+    id: 'CF-1028',
+    title: 'Loose handrail outside library entrance',
+    category: 'Safety',
+    location: 'Library - South Entrance',
+    description: 'The handrail wiggles when students use the stairs.',
+    status: 'Submitted',
+    priority: 'High',
+    reportedBy: 'Student',
+    createdAt: 'May 16',
+    followers: 7,
+    assignee: 'Unassigned',
+    targetResolution: 'Needs review',
+    updates: [
+      {
+        id: 'U-6',
+        visibility: 'Public',
+        author: 'CampusFix',
+        message: 'Request received and awaiting staff review.',
+        createdAt: 'May 16, 9:05 AM',
+      },
+    ],
   },
 ];
+
+export const dashboardMetrics = {
+  openRequests: mockRequests.filter((request) => request.status !== 'Resolved').length,
+  resolvedThisWeek: mockRequests.filter((request) => request.status === 'Resolved').length,
+  duplicateReportsAvoided: 9,
+  avgResponseTime: '3.4 hrs',
+};

@@ -20,9 +20,20 @@ export function RequestCard({ request, onPress }: Props) {
       <Text style={styles.meta}>{request.category} • {request.location}</Text>
       <Text style={styles.description}>{request.description}</Text>
 
+      <View style={styles.detailGrid}>
+        <View style={styles.detailBox}>
+          <Text style={styles.detailLabel}>Priority</Text>
+          <Text style={styles.detailValue}>{request.priority}</Text>
+        </View>
+        <View style={styles.detailBox}>
+          <Text style={styles.detailLabel}>Assigned</Text>
+          <Text style={styles.detailValue}>{request.assignee}</Text>
+        </View>
+      </View>
+
       <View style={styles.bottomRow}>
-        <Text style={styles.small}>Priority: {request.priority}</Text>
         <Text style={styles.small}>{request.followers} following</Text>
+        <Text style={styles.small}>Target: {request.targetResolution}</Text>
       </View>
     </Pressable>
   );
@@ -54,14 +65,14 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 10,
     fontSize: 18,
-    fontWeight: '800',
+    fontWeight: '900',
     color: '#111827',
   },
   meta: {
     marginTop: 5,
     fontSize: 14,
     color: '#475569',
-    fontWeight: '600',
+    fontWeight: '700',
   },
   description: {
     marginTop: 8,
@@ -69,14 +80,38 @@ const styles = StyleSheet.create({
     color: '#334155',
     lineHeight: 20,
   },
+  detailGrid: {
+    marginTop: 14,
+    flexDirection: 'row',
+    gap: 10,
+  },
+  detailBox: {
+    flex: 1,
+    backgroundColor: '#f8fafc',
+    borderRadius: 14,
+    padding: 10,
+  },
+  detailLabel: {
+    color: '#64748b',
+    fontSize: 11,
+    fontWeight: '900',
+    textTransform: 'uppercase',
+  },
+  detailValue: {
+    color: '#111827',
+    fontSize: 13,
+    fontWeight: '800',
+    marginTop: 3,
+  },
   bottomRow: {
     marginTop: 14,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    gap: 10,
   },
   small: {
     color: '#64748b',
-    fontSize: 13,
-    fontWeight: '600',
+    fontSize: 12,
+    fontWeight: '700',
   },
 });
