@@ -92,6 +92,7 @@ CampusFix currently includes:
 - Staff Queue list that updates after submission
 - Request search and filtering
 - Status and priority filters
+- Reusable validation, success, warning, and empty states
 - Staff assignment workflow
 - Status updates
 - Public updates

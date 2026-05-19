@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-
 import { AppFooter } from '../components/AppFooter';
 import { PageBrand } from '../components/PageBrand';
 import { StepIndicator } from '../components/StepIndicator';
+import { StateMessage } from '../components/StateMessage';
 import { useAppState } from '../context/AppStateContext';
 import { RequestPriority } from '../types';
 import { TopNav } from '../components/TopNav';
@@ -73,9 +74,11 @@ export default function ReportIssueScreen() {
       </Text>
 
       {formMessage ? (
-        <View style={styles.messageBox}>
-          <Text style={styles.messageText}>{formMessage}</Text>
-        </View>
+        <StateMessage
+          title={formMessage.includes('Please') ? 'Missing required information' : 'Request detail updated'}
+          message={formMessage}
+          variant={formMessage.includes('Please') ? 'warning' : 'success'}
+        />
       ) : null}
 
       <Text style={styles.label}>Title</Text>

@@ -6,6 +6,7 @@ import { useAppState } from '../context/AppStateContext';
 import { AppFooter } from '../components/AppFooter';
 import { PageBrand } from '../components/PageBrand';
 import { StepIndicator } from '../components/StepIndicator';
+import { StateMessage } from '../components/StateMessage';
 import { TopNav } from '../components/TopNav';
 
 function normalizeWords(value: string) {
@@ -76,6 +77,16 @@ export default function DuplicateCheckScreen() {
           ? 'CampusFix found an existing request with the same category and a close location match.'
           : 'No existing request appears to match this category and location closely enough.'}
       </Text>
+
+      <StateMessage
+        title={hasStrongMatch ? 'Possible duplicate detected' : 'Ready to submit'}
+        message={
+          hasStrongMatch
+            ? 'A similar request already exists. You can follow it or submit a new request anyway.'
+            : 'No close match was found for this category and location.'
+        }
+        variant={hasStrongMatch ? 'warning' : 'success'}
+      />
 
       {pendingRequest ? (
         <View style={styles.pendingCard}>

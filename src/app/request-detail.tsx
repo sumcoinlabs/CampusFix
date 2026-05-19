@@ -7,6 +7,7 @@ import { UserRole } from '../types';
 import { AppFooter } from '../components/AppFooter';
 import { PageBrand } from '../components/PageBrand';
 import { TopNav } from '../components/TopNav';
+import { StateMessage } from '../components/StateMessage';
 
 export default function RequestDetailScreen() {
   const { id, role } = useLocalSearchParams<{ id?: string; role?: UserRole }>();
@@ -152,9 +153,11 @@ export default function RequestDetailScreen() {
           <Text style={styles.actionsTitle}>Staff Actions</Text>
 
           {lastAction ? (
-            <View style={styles.actionNotice}>
-              <Text style={styles.actionNoticeText}>{lastAction}</Text>
-            </View>
+            <StateMessage
+              title={lastAction.includes('before') || lastAction.includes('Type') ? 'Action needed' : 'Action completed'}
+              message={lastAction}
+              variant={lastAction.includes('before') || lastAction.includes('Type') ? 'warning' : 'success'}
+            />
           ) : null}
 
           <View style={styles.actionGrid}>

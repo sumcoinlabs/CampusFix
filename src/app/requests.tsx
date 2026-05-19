@@ -63,10 +63,11 @@ export default function MyRequestsScreen() {
           />
         ))
       ) : (
-        <View style={styles.emptyBox}>
-          <Text style={styles.emptyTitle}>No matching requests</Text>
-          <Text style={styles.emptyText}>Try clearing the search text or changing the filters.</Text>
-        </View>
+        <StateMessage
+          title="No matching requests"
+          message="Try clearing the search text or changing the filters."
+          variant="empty"
+        />
       )}
 
       <AppFooter />
