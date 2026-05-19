@@ -33,6 +33,7 @@ export function TopNav() {
     { label: 'Walkthrough', route: '/walkthrough' },
     { label: 'Activity', route: '/activity' },
     { label: 'Demo Tools', route: '/demo-tools' },
+    { label: 'Architecture', route: '/architecture' },
   ];
 
   function isActive(route: string) {

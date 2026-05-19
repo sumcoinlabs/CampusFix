@@ -102,6 +102,7 @@ CampusFix currently includes:
 - Dashboard metrics
 - Activity Log screen
 - Demo Tools screen for seeding and resetting data
+- Architecture Notes screen
 - Recent local workflow notifications
 - Local persistence with AsyncStorage
 

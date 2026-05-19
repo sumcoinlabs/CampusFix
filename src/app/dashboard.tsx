@@ -162,6 +162,12 @@ export default function DashboardScreen() {
             subtitle="Seed, clear, or reset local demo data."
             route="/demo-tools"
           />
+
+          <QuickAction
+            title="Architecture Notes"
+            subtitle="Review the local-first, backend-ready structure."
+            route="/architecture"
+          />
         </View>
 
         <View style={styles.panel}>
