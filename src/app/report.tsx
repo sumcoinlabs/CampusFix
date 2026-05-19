@@ -9,14 +9,29 @@ const priorities: RequestPriority[] = ['Low', 'Medium', 'High'];
 
 export default function ReportIssueScreen() {
   const { setPendingRequest } = useAppState();
-  const [title, setTitle] = useState('Broken lights near Parking Lot B');
+  const [title, setTitle] = useState('');
   const [category, setCategory] = useState('Lighting');
-  const [location, setLocation] = useState('Parking Lot B');
-  const [description, setDescription] = useState('Several lights are out near the west entrance and the area feels unsafe after dark.');
+  const [location, setLocation] = useState('');
+  const [description, setDescription] = useState('');
   const [priority, setPriority] = useState<RequestPriority>('Medium');
 
   function continueFlow() {
-    setPendingRequest({ title, category, location, description, priority });
+    const cleanTitle = title.trim();
+    const cleanLocation = location.trim();
+    const cleanDescription = description.trim();
+
+    if (!cleanTitle || !cleanLocation || !cleanDescription) {
+      return;
+    }
+
+    setPendingRequest({
+      title: cleanTitle,
+      category,
+      location: cleanLocation,
+      description: cleanDescription,
+      priority,
+    });
+
     router.push('/duplicate' as never);
   }
 
@@ -26,7 +41,7 @@ export default function ReportIssueScreen() {
       <Text style={styles.subheading}>This now creates a real local request after the duplicate check.</Text>
 
       <Text style={styles.label}>Title</Text>
-      <TextInput style={styles.input} value={title} onChangeText={setTitle} />
+      <TextInput style={styles.input} value={title} onChangeText={setTitle} placeholder="Example: Broken steps in Dorm 4" />
 
       <Text style={styles.label}>Category</Text>
       <View style={styles.rowWrap}>
@@ -38,10 +53,10 @@ export default function ReportIssueScreen() {
       </View>
 
       <Text style={styles.label}>Location</Text>
-      <TextInput style={styles.input} value={location} onChangeText={setLocation} />
+      <TextInput style={styles.input} value={location} onChangeText={setLocation} placeholder="Example: Dorm 4, Floor 2" />
 
       <Text style={styles.label}>Description</Text>
-      <TextInput style={[styles.input, styles.textArea]} multiline value={description} onChangeText={setDescription} />
+      <TextInput style={[styles.input, styles.textArea]} multiline value={description} onChangeText={setDescription} placeholder="Describe what happened and where staff should look." />
 
       <Text style={styles.label}>Priority</Text>
       <View style={styles.rowWrap}>
