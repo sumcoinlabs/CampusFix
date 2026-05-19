@@ -1,33 +1,88 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { router } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { AppFooter } from '../components/AppFooter';
 import { PageBrand } from '../components/PageBrand';
 import { StepIndicator } from '../components/StepIndicator';
 import { StateMessage } from '../components/StateMessage';
+import { TopNav } from '../components/TopNav';
 import { useAppState } from '../context/AppStateContext';
 import { RequestPriority } from '../types';
-import { TopNav } from '../components/TopNav';
+import { colors, fontSize, fontWeight, radius, spacing } from '../theme/design';
 
-const categories = ['Lighting', 'Plumbing', 'Safety', 'Cleaning', 'Grounds', 'HVAC'];
+const categories = [
+  'Lighting',
+  'Plumbing',
+  'Safety',
+  'Cleaning',
+  'Grounds',
+  'HVAC',
+  'Electrical',
+  'Parking',
+  'Doors / Locks',
+  'Restrooms',
+  'Accessibility',
+  'Pest Control',
+];
+
 const priorities: RequestPriority[] = ['Low', 'Medium', 'High'];
 
+function SectionCard({
+  title,
+  helper,
+  children,
+}: {
+  title: string;
+  helper?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <View style={styles.sectionCard}>
+      <Text style={styles.sectionTitle}>{title}</Text>
+      {helper ? <Text style={styles.sectionHelper}>{helper}</Text> : null}
+      {children}
+    </View>
+  );
+}
+
+function FieldLabel({ label, required = false }: { label: string; required?: boolean }) {
+  return (
+    <Text style={styles.label}>
+      {label}
+      {required ? <Text style={styles.required}> *</Text> : null}
+    </Text>
+  );
+}
+
 export default function ReportIssueScreen() {
+  const scrollRef = useRef<ScrollView>(null);
   const { setPendingRequest } = useAppState();
+
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('Lighting');
+  const [category, setCategory] = useState('');
   const [location, setLocation] = useState('');
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState<RequestPriority>('Medium');
   const [photoLabel, setPhotoLabel] = useState('');
   const [geoLabel, setGeoLabel] = useState('');
   const [formMessage, setFormMessage] = useState('');
+  const [missingFields, setMissingFields] = useState<string[]>([]);
+
+  function showValidationError(fields: string[]) {
+    setMissingFields(fields);
+    setFormMessage(`Please complete: ${fields.join(', ')}.`);
+
+    setTimeout(() => {
+      scrollRef.current?.scrollTo({ y: 0, animated: true });
+    }, 80);
+  }
 
   function useDemoLocation() {
     const demoLocation = 'Dorm 6, Floor 2 - Hallway Bathroom';
     setLocation(demoLocation);
     setGeoLabel('Demo GPS: 43.6150, -116.2023');
     setFormMessage('Demo location attached.');
+    setMissingFields((items) => items.filter((item) => item !== 'Location'));
   }
 
   function attachMockPhoto() {
@@ -37,17 +92,26 @@ export default function ReportIssueScreen() {
 
   function continueFlow() {
     const cleanTitle = title.trim();
+    const cleanCategory = category.trim();
     const cleanLocation = location.trim();
     const cleanDescription = description.trim();
 
-    if (!cleanTitle || !cleanLocation || !cleanDescription) {
-      setFormMessage('Please enter a title, location, and description.');
+    const missing: string[] = [];
+
+    if (!cleanTitle) missing.push('Title');
+    if (!cleanCategory) missing.push('Category');
+    if (!cleanLocation) missing.push('Location');
+    if (!cleanDescription) missing.push('Description');
+
+    if (missing.length) {
+      showValidationError(missing);
       return;
     }
 
+    setMissingFields([]);
     setPendingRequest({
       title: cleanTitle,
-      category,
+      category: cleanCategory,
       location: cleanLocation,
       description: cleanDescription,
       priority,
@@ -58,95 +122,160 @@ export default function ReportIssueScreen() {
     router.push('/duplicate' as never);
   }
 
+  const hasMissing = (field: string) => missingFields.includes(field);
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView ref={scrollRef} contentContainerStyle={styles.container}>
       <TopNav />
+
       <PageBrand
-        title="Report Issue"
-        subtitle="Create a local request with category, location, priority, and details."
+        title="New Request"
+        subtitle="Create a local request with category, location, priority, attachments, and details."
       />
 
       <StepIndicator currentStep={1} />
 
-      <Text style={styles.heading}>Report a facility issue</Text>
-      <Text style={styles.subheading}>
-        This creates a real local request after duplicate checking. Photo and location are mocked for demo safety.
-      </Text>
-
       {formMessage ? (
         <StateMessage
-          title={formMessage.includes('Please') ? 'Missing required information' : 'Request detail updated'}
-          message={formMessage}
-          variant={formMessage.includes('Please') ? 'warning' : 'success'}
+          title={missingFields.length ? 'Missing required information' : 'Request detail updated'}
+          message={
+            missingFields.length
+              ? `${formMessage} Required fields are marked with an asterisk.`
+              : formMessage
+          }
+          variant={missingFields.length ? 'warning' : 'success'}
         />
       ) : null}
 
-      <Text style={styles.label}>Title</Text>
-      <TextInput
-        style={styles.input}
-        value={title}
-        onChangeText={setTitle}
-        placeholder="Example: Dorm 6 water leak"
-      />
+      <SectionCard
+        title="Issue Details"
+        helper="Start with the basic information staff will use to classify and route the request."
+      >
+        <FieldLabel label="Title" required />
+        <TextInput
+          style={[styles.input, hasMissing('Title') && styles.inputError]}
+          value={title}
+          onChangeText={(value) => {
+            setTitle(value);
+            if (value.trim()) {
+              setMissingFields((items) => items.filter((item) => item !== 'Title'));
+            }
+          }}
+          placeholder="Example: Dorm 6 water leak"
+        />
+        {hasMissing('Title') ? <Text style={styles.fieldError}>Enter a short title for the issue.</Text> : null}
 
-      <Text style={styles.label}>Category</Text>
-      <View style={styles.rowWrap}>
-        {categories.map((item) => (
-          <Pressable key={item} style={[styles.chip, category === item && styles.chipActive]} onPress={() => setCategory(item)}>
-            <Text style={[styles.chipText, category === item && styles.chipTextActive]}>{item}</Text>
-          </Pressable>
-        ))}
-      </View>
+        <FieldLabel label="Category" required />
+        <Text style={styles.inlineHelp}>
+          Choose the closest category so the request can be routed to the right team.
+        </Text>
 
-      <Text style={styles.label}>Location</Text>
-      <TextInput
-        style={styles.input}
-        value={location}
-        onChangeText={setLocation}
-        placeholder="Example: Dorm 6, Floor 2"
-      />
+        <View style={styles.rowWrap}>
+          {categories.map((item) => (
+            <Pressable
+              key={item}
+              style={[styles.chip, category === item && styles.chipActive, hasMissing('Category') && styles.chipError]}
+              onPress={() => {
+                setCategory(item);
+                setMissingFields((fields) => fields.filter((field) => field !== 'Category'));
+              }}
+            >
+              <Text style={[styles.chipText, category === item && styles.chipTextActive]}>
+                {item}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+        {hasMissing('Category') ? <Text style={styles.fieldError}>Select one category before continuing.</Text> : null}
 
-      <View style={styles.actionRow}>
+        <FieldLabel label="Priority" required />
+        <View style={styles.rowWrap}>
+          {priorities.map((item) => (
+            <Pressable
+              key={item}
+              style={[styles.chip, priority === item && styles.chipActive]}
+              onPress={() => setPriority(item)}
+            >
+              <Text style={[styles.chipText, priority === item && styles.chipTextActive]}>
+                {item}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+      </SectionCard>
+
+      <SectionCard
+        title="Location"
+        helper="Location is required. The demo location button simulates future GPS/device support."
+      >
+        <FieldLabel label="Location" required />
+        <TextInput
+          style={[styles.input, hasMissing('Location') && styles.inputError]}
+          value={location}
+          onChangeText={(value) => {
+            setLocation(value);
+            if (value.trim()) {
+              setMissingFields((items) => items.filter((item) => item !== 'Location'));
+            }
+          }}
+          placeholder="Example: Dorm 6, Floor 2"
+        />
+        {hasMissing('Location') ? <Text style={styles.fieldError}>Enter a building, area, room, or approximate location.</Text> : null}
+
         <Pressable style={styles.utilityButton} onPress={useDemoLocation}>
           <Text style={styles.utilityButtonText}>Use Demo Location</Text>
         </Pressable>
 
-        <Pressable style={styles.utilityButton} onPress={attachMockPhoto}>
+        {geoLabel ? (
+          <View style={styles.attachmentBox}>
+            <Text style={styles.attachmentTitle}>Location Attached</Text>
+            <Text style={styles.attachmentText}>{geoLabel}</Text>
+          </View>
+        ) : null}
+      </SectionCard>
+
+      <SectionCard
+        title="Attachments"
+        helper="Photo upload is mocked in this phase but the request object stores attachment metadata."
+      >
+        <Pressable style={styles.utilityButtonDark} onPress={attachMockPhoto}>
           <Text style={styles.utilityButtonText}>Attach Mock Photo</Text>
         </Pressable>
-      </View>
 
-      {(photoLabel || geoLabel) ? (
-        <View style={styles.attachmentBox}>
-          <Text style={styles.attachmentTitle}>Attached Demo Metadata</Text>
-          {photoLabel ? <Text style={styles.attachmentText}>Photo: {photoLabel}</Text> : null}
-          {geoLabel ? <Text style={styles.attachmentText}>Location: {geoLabel}</Text> : null}
-        </View>
-      ) : null}
+        {photoLabel ? (
+          <View style={styles.attachmentBox}>
+            <Text style={styles.attachmentTitle}>Photo Attached</Text>
+            <Text style={styles.attachmentText}>{photoLabel}</Text>
+          </View>
+        ) : (
+          <Text style={styles.helperText}>
+            No photo attached. This is optional for the demo workflow.
+          </Text>
+        )}
+      </SectionCard>
 
-      <Text style={styles.label}>Description</Text>
-      <TextInput
-        style={[styles.input, styles.textArea]}
-        multiline
-        value={description}
-        onChangeText={setDescription}
-        placeholder="Describe what happened and where staff should look."
-      />
+      <SectionCard
+        title="Description"
+        helper="Provide enough detail for staff to understand the problem before dispatching work."
+      >
+        <FieldLabel label="Description" required />
+        <TextInput
+          style={[styles.input, styles.textArea, hasMissing('Description') && styles.inputError]}
+          multiline
+          value={description}
+          onChangeText={(value) => {
+            setDescription(value);
+            if (value.trim()) {
+              setMissingFields((items) => items.filter((item) => item !== 'Description'));
+            }
+          }}
+          placeholder="Describe what happened and where staff should look."
+        />
+        {hasMissing('Description') ? <Text style={styles.fieldError}>Add a short description of the issue.</Text> : null}
+      </SectionCard>
 
-      <Text style={styles.label}>Priority</Text>
-      <View style={styles.rowWrap}>
-        {priorities.map((item) => (
-          <Pressable key={item} style={[styles.chip, priority === item && styles.chipActive]} onPress={() => setPriority(item)}>
-            <Text style={[styles.chipText, priority === item && styles.chipTextActive]}>{item}</Text>
-          </Pressable>
-        ))}
-      </View>
-
-      <View style={styles.photoBox}>
-        <Text style={styles.photoTitle}>Phase 2 Device Feature Placeholder</Text>
-        <Text style={styles.photoText}>
-          These mock buttons represent the future camera/gallery and device GPS workflow without requiring native permissions.
-        </Text>
+      <View style={styles.requiredNote}>
+        <Text style={styles.requiredNoteText}>* Required fields</Text>
       </View>
 
       <Pressable style={styles.primaryButton} onPress={continueFlow}>
@@ -159,28 +288,155 @@ export default function ReportIssueScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20, paddingBottom: 40 },
-  heading: { fontSize: 28, fontWeight: '900', color: '#111827' },
-  subheading: { marginTop: 8, fontSize: 15, color: '#475569', lineHeight: 22, marginBottom: 20 },
-  messageBox: { backgroundColor: '#eff6ff', borderColor: '#bfdbfe', borderWidth: 1, borderRadius: 16, padding: 13, marginBottom: 14 },
-  messageText: { color: '#1d4ed8', fontWeight: '900' },
-  label: { fontSize: 14, fontWeight: '900', color: '#334155', marginBottom: 8, marginTop: 14 },
-  input: { backgroundColor: '#ffffff', borderColor: '#e5e7eb', borderWidth: 1, borderRadius: 16, padding: 14, fontSize: 16, color: '#111827' },
-  textArea: { minHeight: 110, textAlignVertical: 'top' },
-  rowWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  chip: { borderRadius: 999, paddingVertical: 9, paddingHorizontal: 14, backgroundColor: '#ffffff', borderWidth: 1, borderColor: '#e5e7eb' },
-  chipActive: { backgroundColor: '#0f172a', borderColor: '#0f172a' },
-  chipText: { color: '#334155', fontWeight: '800' },
-  chipTextActive: { color: '#ffffff' },
-  actionRow: { flexDirection: 'row', gap: 10, marginTop: 12 },
-  utilityButton: { flex: 1, backgroundColor: '#0f172a', borderRadius: 14, padding: 13, alignItems: 'center' },
-  utilityButtonText: { color: '#ffffff', fontWeight: '900', fontSize: 13 },
-  attachmentBox: { marginTop: 14, backgroundColor: '#f0fdf4', borderColor: '#86efac', borderWidth: 1, borderRadius: 16, padding: 14 },
-  attachmentTitle: { color: '#166534', fontWeight: '900', marginBottom: 5 },
-  attachmentText: { color: '#166534', fontWeight: '700', marginTop: 3 },
-  photoBox: { marginTop: 20, borderRadius: 18, borderWidth: 1, borderColor: '#cbd5e1', borderStyle: 'dashed', padding: 20, alignItems: 'center', backgroundColor: '#ffffff' },
-  photoTitle: { fontWeight: '900', color: '#111827' },
-  photoText: { marginTop: 5, color: '#64748b', textAlign: 'center', lineHeight: 20 },
-  primaryButton: { marginTop: 22, backgroundColor: '#2563eb', borderRadius: 18, padding: 16, alignItems: 'center' },
-  primaryButtonText: { color: '#ffffff', fontSize: 16, fontWeight: '900' },
+  container: {
+    padding: spacing.xl,
+    paddingBottom: 40,
+  },
+  sectionCard: {
+    backgroundColor: colors.white,
+    borderColor: colors.border,
+    borderWidth: 1,
+    borderRadius: radius.xxl,
+    padding: spacing.section,
+    marginBottom: spacing.section,
+  },
+  sectionTitle: {
+    color: colors.text,
+    fontSize: fontSize.xl,
+    fontWeight: fontWeight.black,
+  },
+  sectionHelper: {
+    color: colors.textSoft,
+    fontWeight: fontWeight.semibold,
+    lineHeight: 20,
+    marginTop: 5,
+    marginBottom: spacing.md,
+  },
+  label: {
+    fontSize: fontSize.base,
+    fontWeight: fontWeight.black,
+    color: colors.textMuted,
+    marginBottom: spacing.sm,
+    marginTop: spacing.md,
+  },
+  required: {
+    color: colors.red,
+  },
+  inlineHelp: {
+    color: colors.textSoft,
+    fontWeight: fontWeight.semibold,
+    lineHeight: 19,
+    marginBottom: spacing.sm,
+  },
+  input: {
+    backgroundColor: colors.page,
+    borderColor: colors.border,
+    borderWidth: 1,
+    borderRadius: radius.lg,
+    padding: 14,
+    fontSize: fontSize.lg,
+    color: colors.text,
+  },
+  inputError: {
+    borderColor: colors.orange,
+    backgroundColor: colors.orangeSoft,
+  },
+  fieldError: {
+    color: colors.orangeText,
+    fontWeight: fontWeight.black,
+    marginTop: spacing.sm,
+    lineHeight: 19,
+  },
+  textArea: {
+    minHeight: 120,
+    textAlignVertical: 'top',
+  },
+  rowWrap: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.sm,
+    marginBottom: spacing.sm,
+  },
+  chip: {
+    borderRadius: radius.pill,
+    paddingVertical: 9,
+    paddingHorizontal: 14,
+    backgroundColor: colors.page,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  chipError: {
+    borderColor: colors.orangeBorder,
+  },
+  chipActive: {
+    backgroundColor: colors.navy,
+    borderColor: colors.navy,
+  },
+  chipText: {
+    color: colors.textMuted,
+    fontWeight: fontWeight.bold,
+  },
+  chipTextActive: {
+    color: colors.white,
+  },
+  utilityButton: {
+    backgroundColor: colors.blue,
+    borderRadius: radius.lg,
+    padding: 14,
+    alignItems: 'center',
+    marginTop: spacing.md,
+  },
+  utilityButtonDark: {
+    backgroundColor: colors.navy,
+    borderRadius: radius.lg,
+    padding: 14,
+    alignItems: 'center',
+  },
+  utilityButtonText: {
+    color: colors.white,
+    fontWeight: fontWeight.black,
+    fontSize: fontSize.base,
+  },
+  attachmentBox: {
+    marginTop: spacing.md,
+    backgroundColor: colors.greenSoft,
+    borderColor: colors.greenBorder,
+    borderWidth: 1,
+    borderRadius: radius.lg,
+    padding: spacing.md,
+  },
+  attachmentTitle: {
+    color: colors.greenText,
+    fontWeight: fontWeight.black,
+    marginBottom: 5,
+  },
+  attachmentText: {
+    color: colors.greenText,
+    fontWeight: fontWeight.semibold,
+    marginTop: 3,
+  },
+  helperText: {
+    color: colors.textSoft,
+    fontWeight: fontWeight.semibold,
+    lineHeight: 20,
+  },
+  requiredNote: {
+    marginTop: -4,
+    marginBottom: spacing.md,
+  },
+  requiredNoteText: {
+    color: colors.textSoft,
+    fontWeight: fontWeight.bold,
+  },
+  primaryButton: {
+    backgroundColor: colors.blue,
+    borderRadius: radius.xl,
+    padding: spacing.lg,
+    alignItems: 'center',
+  },
+  primaryButtonText: {
+    color: colors.white,
+    fontSize: fontSize.lg,
+    fontWeight: fontWeight.black,
+  },
 });
