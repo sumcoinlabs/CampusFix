@@ -32,6 +32,8 @@ export type CampusRequest = {
   assignee: string;
   targetResolution: string;
   updates: RequestUpdate[];
+  photoLabel?: string;
+  geoLabel?: string;
 };
 
 export type PendingRequest = {
@@ -40,6 +42,8 @@ export type PendingRequest = {
   location: string;
   description: string;
   priority: RequestPriority;
+  photoLabel?: string;
+  geoLabel?: string;
 };
 
 export type AppNotification = {

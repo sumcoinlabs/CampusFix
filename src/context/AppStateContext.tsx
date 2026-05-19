@@ -133,6 +133,8 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       followers: 1,
       assignee: 'Unassigned',
       targetResolution: 'Needs review',
+      photoLabel: source?.photoLabel,
+      geoLabel: source?.geoLabel,
       updates: [
         {
           id: makeId('U'),

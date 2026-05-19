@@ -114,6 +114,14 @@ export default function RequestDetailScreen() {
 
         <Text style={styles.label}>Target Resolution</Text>
         <Text style={styles.value}>{request.targetResolution}</Text>
+
+        {(request.photoLabel || request.geoLabel) ? (
+          <>
+            <Text style={styles.label}>Photo / Location Metadata</Text>
+            {request.photoLabel ? <Text style={styles.value}>{request.photoLabel}</Text> : null}
+            {request.geoLabel ? <Text style={styles.value}>{request.geoLabel}</Text> : null}
+          </>
+        ) : null}
       </View>
 
       {isStaff ? (

@@ -81,6 +81,8 @@ CampusFix currently includes:
 - Resident vs. staff role separation
 - Request creation
 - Step indicator for resident request flow
+- Mock photo attachment workflow
+- Mock location capture workflow
 - Duplicate issue detection
 - Follow existing request workflow
 - My Requests list that updates after submission
