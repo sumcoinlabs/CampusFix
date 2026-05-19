@@ -91,6 +91,8 @@ CampusFix currently includes:
 - Functional public update composer
 - Functional internal note composer
 - Dashboard metrics
+- Activity Log screen
+- Recent local workflow notifications
 - Local persistence with AsyncStorage
 
 ## Demo roles

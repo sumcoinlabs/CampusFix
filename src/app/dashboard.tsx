@@ -70,6 +70,7 @@ export default function DashboardScreen() {
       ) : null}
 
       <HomeButton title="Demo Walkthrough" subtitle="Step-by-step guide for reviewing the full resident and staff workflow." route="/walkthrough" />
+      <HomeButton title="Activity Log" subtitle="Review local actions, notifications, request updates, and recent workflow activity." route="/activity" />
 
       {role === 'resident' ? (
         <>

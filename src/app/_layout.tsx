@@ -39,6 +39,7 @@ function AppStack() {
       <Stack.Screen name="index" options={{ headerTitle: () => <HeaderBrand /> }} />
       <Stack.Screen name="dashboard" />
       <Stack.Screen name="walkthrough" />
+      <Stack.Screen name="activity" />
       <Stack.Screen name="report" />
       <Stack.Screen name="duplicate" />
       <Stack.Screen name="confirmation" />
