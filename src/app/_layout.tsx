@@ -2,6 +2,7 @@ import { Stack, router } from 'expo-router';
 import React from 'react';
 import { Pressable, Text } from 'react-native';
 import { AppStateProvider, useAppState } from '../context/AppStateContext';
+import { HeaderBrand } from '../components/HeaderBrand';
 
 function HeaderLogout() {
   const { currentUser, logout } = useAppState();
@@ -30,17 +31,19 @@ function AppStack() {
         headerTintColor: '#ffffff',
         headerTitleStyle: { fontWeight: '800' },
         contentStyle: { backgroundColor: '#f8fafc' },
+        headerTitleAlign: 'center',
+        headerTitle: () => <HeaderBrand />,
         headerRight: () => <HeaderLogout />,
       }}
     >
-      <Stack.Screen name="index" options={{ title: 'CampusFix Demo Login' }} />
-      <Stack.Screen name="dashboard" options={{ title: 'Dashboard' }} />
-      <Stack.Screen name="report" options={{ title: 'Report Issue' }} />
-      <Stack.Screen name="duplicate" options={{ title: 'Duplicate Check' }} />
-      <Stack.Screen name="confirmation" options={{ title: 'Confirmation' }} />
-      <Stack.Screen name="requests" options={{ title: 'My Requests' }} />
-      <Stack.Screen name="staff" options={{ title: 'Staff Queue' }} />
-      <Stack.Screen name="request-detail" options={{ title: 'Request Detail' }} />
+      <Stack.Screen name="index" options={{ headerTitle: () => <HeaderBrand /> }} />
+      <Stack.Screen name="dashboard" />
+      <Stack.Screen name="report" />
+      <Stack.Screen name="duplicate" />
+      <Stack.Screen name="confirmation" />
+      <Stack.Screen name="requests" />
+      <Stack.Screen name="staff" />
+      <Stack.Screen name="request-detail" />
     </Stack>
   );
 }

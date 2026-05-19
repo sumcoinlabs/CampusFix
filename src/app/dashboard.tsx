@@ -7,6 +7,7 @@ import { RoleBanner } from '../components/RoleBanner';
 import { useAppState } from '../context/AppStateContext';
 import { AppFooter } from '../components/AppFooter';
 import { CampusFixLogo } from '../components/CampusFixLogo';
+import { PageBrand } from '../components/PageBrand';
 
 function HomeButton({ title, subtitle, route }: { title: string; subtitle: string; route: string }) {
   return (
@@ -33,6 +34,7 @@ export default function DashboardScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <PageBrand title="Dashboard" subtitle="Live local metrics, recent activity, and workflow shortcuts." />
       <RoleBanner role={role} />
 
       <View style={styles.hero}>

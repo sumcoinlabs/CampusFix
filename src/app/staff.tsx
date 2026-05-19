@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { RequestCard } from '../components/RequestCard';
 import { useAppState } from '../context/AppStateContext';
 import { AppFooter } from '../components/AppFooter';
+import { PageBrand } from '../components/PageBrand';
 
 const filters = ['All', 'High Priority', 'Assigned', 'New', 'Resolved'];
 
@@ -21,6 +22,7 @@ export default function StaffQueueScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <PageBrand title="Staff Queue" subtitle="Review, assign, update, and resolve incoming work orders." />
       <Text style={styles.heading}>Staff Queue</Text>
       <Text style={styles.subheading}>
         Staff actions on request detail now update local app state.

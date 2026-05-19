@@ -4,12 +4,14 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { RequestCard } from '../components/RequestCard';
 import { useAppState } from '../context/AppStateContext';
 import { AppFooter } from '../components/AppFooter';
+import { PageBrand } from '../components/PageBrand';
 
 export default function MyRequestsScreen() {
   const { requests } = useAppState();
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <PageBrand title="My Requests" subtitle="Track submitted and followed requests with public updates." />
       <Text style={styles.heading}>My Requests</Text>
       <Text style={styles.subheading}>
         This list updates when you submit or follow a request.

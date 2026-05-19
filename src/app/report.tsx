@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-
 import { useAppState } from '../context/AppStateContext';
 import { RequestPriority } from '../types';
 import { AppFooter } from '../components/AppFooter';
+import { PageBrand } from '../components/PageBrand';
 
 const categories = ['Lighting', 'Plumbing', 'Safety', 'Cleaning', 'Grounds', 'HVAC'];
 const priorities: RequestPriority[] = ['Low', 'Medium', 'High'];
@@ -38,6 +39,7 @@ export default function ReportIssueScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <PageBrand title="Report Issue" subtitle="Create a local request with category, location, priority, and details." />
       <Text style={styles.heading}>Report a facility issue</Text>
       <Text style={styles.subheading}>This now creates a real local request after the duplicate check.</Text>
 

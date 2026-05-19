@@ -5,6 +5,7 @@ import { StatusBadge } from '../components/StatusBadge';
 import { useAppState } from '../context/AppStateContext';
 import { UserRole } from '../types';
 import { AppFooter } from '../components/AppFooter';
+import { PageBrand } from '../components/PageBrand';
 
 export default function RequestDetailScreen() {
   const { id, role } = useLocalSearchParams<{ id?: string; role?: UserRole }>();
@@ -89,6 +90,7 @@ export default function RequestDetailScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <PageBrand title="Request Detail" subtitle="View request information, updates, notes, and staff actions." />
       <Text style={styles.id}>{request.id}</Text>
       <Text style={styles.heading}>{request.title}</Text>
 

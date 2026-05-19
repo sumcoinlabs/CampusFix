@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { RequestCard } from '../components/RequestCard';
 import { useAppState } from '../context/AppStateContext';
 import { AppFooter } from '../components/AppFooter';
+import { PageBrand } from '../components/PageBrand';
 
 function normalizeWords(value: string) {
   return value
@@ -60,6 +61,7 @@ export default function DuplicateCheckScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <PageBrand title="Duplicate Check" subtitle="Compare the new request against existing local reports before submitting." />
       <Text style={styles.heading}>
         {hasStrongMatch ? 'Similar issue found' : 'No strong duplicate found'}
       </Text>
