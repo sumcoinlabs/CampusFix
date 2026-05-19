@@ -1,38 +1,48 @@
 import React from 'react';
 import { router } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { mockRequests } from '../data/mockRequests';
 import { RequestCard } from '../components/RequestCard';
+import { useAppState } from '../context/AppStateContext';
 
 export default function DuplicateCheckScreen() {
-  const similar = mockRequests[0];
+  const { requests, pendingRequest, followRequest, createRequest } = useAppState();
+
+  const similar =
+    requests.find((request) =>
+      pendingRequest &&
+      request.category === pendingRequest.category &&
+      request.location.toLowerCase().includes(pendingRequest.location.toLowerCase().split(' ')[0] || '')
+    ) || requests[0];
+
+  function followExisting() {
+    followRequest(similar.id);
+    router.push({ pathname: '/confirmation', params: { action: 'followed', id: similar.id } } as never);
+  }
+
+  function submitNew() {
+    const id = createRequest(pendingRequest);
+    router.push({ pathname: '/confirmation', params: { action: 'submitted', id } } as never);
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.heading}>Similar issue found</Text>
       <Text style={styles.subheading}>
-        CampusFix prevents repeated work orders by encouraging users to follow an existing active issue.
+        Duplicate prevention is functional. Following this request increases the follower count.
       </Text>
 
       <View style={styles.matchCard}>
-        <Text style={styles.matchLabel}>92% Location + Category Match</Text>
-        <Text style={styles.matchText}>Lighting issue already open near Parking Lot B.</Text>
+        <Text style={styles.matchLabel}>Possible Match</Text>
+        <Text style={styles.matchText}>{similar.category} issue near {similar.location}</Text>
       </View>
 
       <RequestCard request={similar} onPress={() => router.push({ pathname: '/request-detail', params: { id: similar.id } } as never)} />
 
-      <View style={styles.explainer}>
-        <Text style={styles.explainerTitle}>Workflow Value</Text>
-        <Text style={styles.explainerText}>
-          Residents get visibility without creating duplicates. Staff sees cleaner queues, fewer repeated tickets, and better public communication.
-        </Text>
-      </View>
-
-      <Pressable style={styles.primaryButton} onPress={() => router.push({ pathname: '/confirmation', params: { action: 'followed' } } as never)}>
+      <Pressable style={styles.primaryButton} onPress={followExisting}>
         <Text style={styles.primaryButtonText}>Follow Existing Request</Text>
       </Pressable>
 
-      <Pressable style={styles.secondaryButton} onPress={() => router.push({ pathname: '/confirmation', params: { action: 'submitted' } } as never)}>
+      <Pressable style={styles.secondaryButton} onPress={submitNew}>
         <Text style={styles.secondaryButtonText}>Submit as New Request Anyway</Text>
       </Pressable>
     </ScrollView>
@@ -46,9 +56,6 @@ const styles = StyleSheet.create({
   matchCard: { backgroundColor: '#ecfeff', borderColor: '#67e8f9', borderWidth: 1, borderRadius: 18, padding: 16, marginBottom: 14 },
   matchLabel: { color: '#0e7490', fontWeight: '900', fontSize: 13, textTransform: 'uppercase' },
   matchText: { color: '#164e63', fontWeight: '800', marginTop: 5 },
-  explainer: { backgroundColor: '#fefce8', borderColor: '#fde68a', borderWidth: 1, borderRadius: 18, padding: 16, marginTop: 4 },
-  explainerTitle: { fontWeight: '900', color: '#854d0e', fontSize: 16 },
-  explainerText: { marginTop: 6, color: '#713f12', lineHeight: 21 },
   primaryButton: { marginTop: 22, backgroundColor: '#2563eb', borderRadius: 18, padding: 16, alignItems: 'center' },
   primaryButtonText: { color: '#ffffff', fontSize: 16, fontWeight: '900' },
   secondaryButton: { marginTop: 12, backgroundColor: '#ffffff', borderRadius: 18, padding: 16, alignItems: 'center', borderColor: '#e5e7eb', borderWidth: 1 },

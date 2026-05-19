@@ -3,7 +3,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 export default function ConfirmationScreen() {
-  const { action } = useLocalSearchParams<{ action?: string }>();
+  const { action, id } = useLocalSearchParams<{ action?: string; id?: string }>();
   const followed = action === 'followed';
 
   return (
@@ -12,26 +12,26 @@ export default function ConfirmationScreen() {
         <Text style={styles.check}>✓</Text>
       </View>
 
-      <Text style={styles.heading}>{followed ? 'You are following this request' : 'Request submitted'}</Text>
+      <Text style={styles.heading}>{followed ? 'Following request' : 'Request submitted'}</Text>
       <Text style={styles.subheading}>
         {followed
-          ? 'You will receive public updates when staff changes the status or posts a resolution note.'
-          : 'Facilities has received the new report. Staff can now review, assign, and update the request.'}
+          ? `Follower count increased for ${id}. You will see public updates in My Requests.`
+          : `${id} was added to My Requests and the Staff Queue.`}
       </Text>
 
       <View style={styles.summaryCard}>
-        <Text style={styles.summaryTitle}>What happens next</Text>
-        <Text style={styles.summaryItem}>1. Request appears in the staff queue</Text>
-        <Text style={styles.summaryItem}>2. Staff assigns ownership and priority</Text>
-        <Text style={styles.summaryItem}>3. Public updates keep users informed</Text>
-        <Text style={styles.summaryItem}>4. Internal notes help staff coordinate resolution</Text>
+        <Text style={styles.summaryTitle}>Functional Phase 1 Complete</Text>
+        <Text style={styles.summaryItem}>✓ Data persists locally with AsyncStorage</Text>
+        <Text style={styles.summaryItem}>✓ New requests update lists</Text>
+        <Text style={styles.summaryItem}>✓ Staff actions update request state</Text>
+        <Text style={styles.summaryItem}>✓ Public/internal updates are separated</Text>
       </View>
 
       <Pressable style={styles.primaryButton} onPress={() => router.push('/requests' as never)}>
         <Text style={styles.primaryButtonText}>View My Requests</Text>
       </Pressable>
 
-      <Pressable style={styles.secondaryButton} onPress={() => router.push({ pathname: '/dashboard', params: { role: 'resident' } } as never)}>
+      <Pressable style={styles.secondaryButton} onPress={() => router.push('/dashboard' as never)}>
         <Text style={styles.secondaryButtonText}>Back to Dashboard</Text>
       </Pressable>
     </ScrollView>

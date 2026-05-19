@@ -1,20 +1,32 @@
 import React, { useState } from 'react';
 import { router } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useAppState } from '../context/AppStateContext';
+import { RequestPriority } from '../types';
 
 const categories = ['Lighting', 'Plumbing', 'Safety', 'Cleaning', 'Grounds', 'HVAC'];
-const priorities = ['Low', 'Medium', 'High'];
+const priorities: RequestPriority[] = ['Low', 'Medium', 'High'];
 
 export default function ReportIssueScreen() {
+  const { setPendingRequest } = useAppState();
+  const [title, setTitle] = useState('Broken lights near Parking Lot B');
   const [category, setCategory] = useState('Lighting');
-  const [priority, setPriority] = useState('Medium');
+  const [location, setLocation] = useState('Parking Lot B');
+  const [description, setDescription] = useState('Several lights are out near the west entrance and the area feels unsafe after dark.');
+  const [priority, setPriority] = useState<RequestPriority>('Medium');
+
+  function continueFlow() {
+    setPendingRequest({ title, category, location, description, priority });
+    router.push('/duplicate' as never);
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.heading}>Report a facility issue</Text>
-      <Text style={styles.subheading}>
-        Capture structured request data, then check for similar open reports before creating duplicate work.
-      </Text>
+      <Text style={styles.subheading}>This now creates a real local request after the duplicate check.</Text>
+
+      <Text style={styles.label}>Title</Text>
+      <TextInput style={styles.input} value={title} onChangeText={setTitle} />
 
       <Text style={styles.label}>Category</Text>
       <View style={styles.rowWrap}>
@@ -26,14 +38,10 @@ export default function ReportIssueScreen() {
       </View>
 
       <Text style={styles.label}>Location</Text>
-      <TextInput style={styles.input} defaultValue="Parking Lot B" />
+      <TextInput style={styles.input} value={location} onChangeText={setLocation} />
 
       <Text style={styles.label}>Description</Text>
-      <TextInput
-        style={[styles.input, styles.textArea]}
-        multiline
-        defaultValue="Several lights are out near the west entrance and the area feels unsafe after dark."
-      />
+      <TextInput style={[styles.input, styles.textArea]} multiline value={description} onChangeText={setDescription} />
 
       <Text style={styles.label}>Priority</Text>
       <View style={styles.rowWrap}>
@@ -46,17 +54,10 @@ export default function ReportIssueScreen() {
 
       <View style={styles.photoBox}>
         <Text style={styles.photoTitle}>Photo Attachment</Text>
-        <Text style={styles.photoText}>Placeholder for camera/gallery upload in a production app.</Text>
+        <Text style={styles.photoText}>Phase 2 will add camera/gallery support. This screen is ready for it.</Text>
       </View>
 
-      <View style={styles.preview}>
-        <Text style={styles.previewTitle}>Routing Preview</Text>
-        <Text style={styles.previewText}>Department: Facilities</Text>
-        <Text style={styles.previewText}>Estimated response: 1 business day</Text>
-        <Text style={styles.previewText}>Duplicate check: Runs before final submission</Text>
-      </View>
-
-      <Pressable style={styles.primaryButton} onPress={() => router.push('/duplicate' as never)}>
+      <Pressable style={styles.primaryButton} onPress={continueFlow}>
         <Text style={styles.primaryButtonText}>Continue to Duplicate Check</Text>
       </Pressable>
     </ScrollView>
@@ -78,9 +79,6 @@ const styles = StyleSheet.create({
   photoBox: { marginTop: 20, borderRadius: 18, borderWidth: 1, borderColor: '#cbd5e1', borderStyle: 'dashed', padding: 20, alignItems: 'center', backgroundColor: '#ffffff' },
   photoTitle: { fontWeight: '900', color: '#111827' },
   photoText: { marginTop: 5, color: '#64748b', textAlign: 'center' },
-  preview: { marginTop: 18, backgroundColor: '#eff6ff', borderColor: '#bfdbfe', borderWidth: 1, borderRadius: 18, padding: 16 },
-  previewTitle: { color: '#1d4ed8', fontWeight: '900', fontSize: 16, marginBottom: 6 },
-  previewText: { color: '#334155', fontWeight: '700', marginTop: 4 },
   primaryButton: { marginTop: 22, backgroundColor: '#2563eb', borderRadius: 18, padding: 16, alignItems: 'center' },
   primaryButtonText: { color: '#ffffff', fontSize: 16, fontWeight: '900' },
 });

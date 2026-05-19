@@ -1,6 +1,6 @@
 import { CampusRequest } from '../types';
 
-export const mockRequests: CampusRequest[] = [
+export const initialRequests: CampusRequest[] = [
   {
     id: 'CF-1042',
     title: 'Broken lights near Parking Lot B',
@@ -84,34 +84,6 @@ export const mockRequests: CampusRequest[] = [
       },
     ],
   },
-  {
-    id: 'CF-1028',
-    title: 'Loose handrail outside library entrance',
-    category: 'Safety',
-    location: 'Library - South Entrance',
-    description: 'The handrail wiggles when students use the stairs.',
-    status: 'Submitted',
-    priority: 'High',
-    reportedBy: 'Student',
-    createdAt: 'May 16',
-    followers: 7,
-    assignee: 'Unassigned',
-    targetResolution: 'Needs review',
-    updates: [
-      {
-        id: 'U-6',
-        visibility: 'Public',
-        author: 'CampusFix',
-        message: 'Request received and awaiting staff review.',
-        createdAt: 'May 16, 9:05 AM',
-      },
-    ],
-  },
 ];
 
-export const dashboardMetrics = {
-  openRequests: mockRequests.filter((request) => request.status !== 'Resolved').length,
-  resolvedThisWeek: mockRequests.filter((request) => request.status === 'Resolved').length,
-  duplicateReportsAvoided: 9,
-  avgResponseTime: '3.4 hrs',
-};
+export const mockRequests = initialRequests;
