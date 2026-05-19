@@ -29,10 +29,22 @@
 
 ## Preview
 
+### Login and role selection
+
 <p align="center">
-  <img src="assets/screenshots/login.png" width="220" alt="CampusFix login screen" />
-  <img src="assets/screenshots/resident-flow.png" width="220" alt="CampusFix resident request flow" />
-  <img src="assets/screenshots/staff-detail.png" width="220" alt="CampusFix staff request detail" />
+  <img src="assets/screenshots/login.png" width="720" alt="CampusFix login and role selection screen" />
+</p>
+
+### Resident workflow
+
+<p align="center">
+  <img src="assets/screenshots/resident-flow.png" width="720" alt="CampusFix resident dashboard and request workflow" />
+</p>
+
+### Staff queue and request management
+
+<p align="center">
+  <img src="assets/screenshots/staff-detail.png" width="720" alt="CampusFix staff queue and request management screen" />
 </p>
 
 ## Overview
