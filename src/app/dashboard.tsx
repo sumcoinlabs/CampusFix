@@ -156,6 +156,12 @@ export default function DashboardScreen() {
             subtitle="Step-by-step guide for reviewing the demo."
             route="/walkthrough"
           />
+
+          <QuickAction
+            title="Demo Tools"
+            subtitle="Seed, clear, or reset local demo data."
+            route="/demo-tools"
+          />
         </View>
 
         <View style={styles.panel}>

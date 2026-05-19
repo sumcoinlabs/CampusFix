@@ -36,6 +36,8 @@ type AppState = {
   addPublicUpdate: (id: string, message: string) => void;
   addInternalNote: (id: string, message: string) => void;
   resetDemo: () => void;
+  seedDemoRequests: () => void;
+  clearActivity: () => void;
 };
 
 const STORAGE_KEY = 'campusfix-state-v1';
@@ -171,6 +173,64 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
     pushNotification(`Added internal note on ${id}.`);
   }
 
+  function seedDemoRequests() {
+    const seededRequests: CampusRequest[] = [
+      {
+        id: makeId('CF'),
+        title: 'Accessible ramp handrail is loose',
+        category: 'Accessibility',
+        location: 'Library East Entrance',
+        description: 'The handrail near the accessibility ramp is loose and needs inspection.',
+        status: 'Submitted',
+        priority: 'High',
+        reportedBy: currentUser?.name || 'Demo User',
+        createdAt: 'Just now',
+        followers: 3,
+        assignee: 'Unassigned',
+        targetResolution: 'Needs review',
+        updates: [
+          {
+            id: makeId('U'),
+            visibility: 'Public',
+            author: 'CampusFix',
+            message: 'Request received and awaiting staff review.',
+            createdAt: nowLabel(),
+          },
+        ],
+      },
+      {
+        id: makeId('CF'),
+        title: 'Parking lot pothole near north gate',
+        category: 'Parking',
+        location: 'North Parking Lot',
+        description: 'Large pothole near the north gate is causing drivers to swerve.',
+        status: 'Assigned',
+        priority: 'Medium',
+        reportedBy: 'Resident Demo',
+        createdAt: 'Just now',
+        followers: 5,
+        assignee: 'Grounds Crew',
+        targetResolution: 'This week',
+        updates: [
+          {
+            id: makeId('U'),
+            visibility: 'Public',
+            author: 'Grounds Crew',
+            message: 'The issue has been assigned for inspection.',
+            createdAt: nowLabel(),
+          },
+        ],
+      },
+    ];
+
+    setRequests((items) => [...seededRequests, ...items]);
+    pushNotification('Seeded additional demo requests.');
+  }
+
+  function clearActivity() {
+    setNotifications([]);
+  }
+
   function resetDemo() {
     setCurrentUser(null);
     setAccounts(demoAccounts);
@@ -199,6 +259,8 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       addPublicUpdate,
       addInternalNote,
       resetDemo,
+      seedDemoRequests,
+      clearActivity,
     }),
     [currentUser, accounts, requests, pendingRequest, notifications]
   );

@@ -101,6 +101,7 @@ CampusFix currently includes:
 - Functional internal note composer
 - Dashboard metrics
 - Activity Log screen
+- Demo Tools screen for seeding and resetting data
 - Recent local workflow notifications
 - Local persistence with AsyncStorage
 

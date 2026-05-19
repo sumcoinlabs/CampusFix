@@ -40,6 +40,7 @@ function AppStack() {
       <Stack.Screen name="dashboard" />
       <Stack.Screen name="walkthrough" />
       <Stack.Screen name="activity" />
+      <Stack.Screen name="demo-tools" />
       <Stack.Screen name="report" />
       <Stack.Screen name="duplicate" />
       <Stack.Screen name="confirmation" />

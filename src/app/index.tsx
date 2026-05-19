@@ -6,7 +6,7 @@ import { UserRole } from '../types';
 import { CampusFixLogo } from '../components/CampusFixLogo';
 
 export default function LoginScreen() {
-  const { loginDemo, register, resetDemo } = useAppState();
+  const { loginDemo, register } = useAppState();
   const [name, setName] = useState('Demo User');
   const [email, setEmail] = useState('demo@demo.com');
   const [role, setRole] = useState<UserRole>('resident');
@@ -64,9 +64,6 @@ export default function LoginScreen() {
         </Pressable>
       </View>
 
-      <Pressable style={styles.resetButton} onPress={resetDemo}>
-        <Text style={styles.resetText}>Reset Demo Data</Text>
-      </Pressable>
     </ScrollView>
   );
 }
