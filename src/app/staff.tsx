@@ -1,31 +1,31 @@
 import React, { useState } from 'react';
 import { router } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { RequestCard } from '../components/RequestCard';
-import { useAppState } from '../context/AppStateContext';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { AppFooter } from '../components/AppFooter';
 import { PageBrand } from '../components/PageBrand';
-
-const filters = ['All', 'High Priority', 'Assigned', 'New', 'Resolved'];
+import { RequestCard } from '../components/RequestCard';
+import { PriorityFilter, RequestFilters, StatusFilter } from '../components/RequestFilters';
+import { useAppState } from '../context/AppStateContext';
+import { filterRequests } from '../utils/filterRequests';
 
 export default function StaffQueueScreen() {
   const { requests } = useAppState();
-  const [filter, setFilter] = useState('All');
+  const [searchText, setSearchText] = useState('');
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('All');
+  const [priorityFilter, setPriorityFilter] = useState<PriorityFilter>('All');
 
-  const filtered = requests.filter((request) => {
-    if (filter === 'High Priority') return request.priority === 'High';
-    if (filter === 'Assigned') return request.status === 'Assigned' || request.status === 'In Progress';
-    if (filter === 'New') return request.status === 'Submitted';
-    if (filter === 'Resolved') return request.status === 'Resolved';
-    return true;
-  });
+  const filteredRequests = filterRequests(requests, searchText, statusFilter, priorityFilter);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <PageBrand title="Staff Queue" subtitle="Review, assign, update, and resolve incoming work orders." />
+      <PageBrand
+        title="Staff Queue"
+        subtitle="Review, assign, update, and resolve incoming work orders."
+      />
+
       <Text style={styles.heading}>Staff Queue</Text>
       <Text style={styles.subheading}>
-        Staff actions on request detail now update local app state.
+        Search and filter active work orders, then open a request to assign, update, or resolve it.
       </Text>
 
       <View style={styles.statsRow}>
@@ -43,23 +43,37 @@ export default function StaffQueueScreen() {
         </View>
       </View>
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterRow}>
-        {filters.map((item) => (
-          <Pressable key={item} style={[styles.filterChip, filter === item && styles.filterChipActive]} onPress={() => setFilter(item)}>
-            <Text style={[styles.filterText, filter === item && styles.filterTextActive]}>{item}</Text>
-          </Pressable>
-        ))}
-            <AppFooter />
-    </ScrollView>
+      <RequestFilters
+        searchText={searchText}
+        setSearchText={setSearchText}
+        statusFilter={statusFilter}
+        setStatusFilter={setStatusFilter}
+        priorityFilter={priorityFilter}
+        setPriorityFilter={setPriorityFilter}
+        resultCount={filteredRequests.length}
+      />
 
-      {filtered.map((request) => (
-        <RequestCard
-          key={request.id}
-          request={request}
-          onPress={() => router.push({ pathname: '/request-detail', params: { id: request.id, role: 'staff' } } as never)}
-        />
-      ))}
-          <AppFooter />
+      {filteredRequests.length ? (
+        filteredRequests.map((request) => (
+          <RequestCard
+            key={request.id}
+            request={request}
+            onPress={() =>
+              router.push({
+                pathname: '/request-detail',
+                params: { id: request.id, role: 'staff' },
+              } as never)
+            }
+          />
+        ))
+      ) : (
+        <View style={styles.emptyBox}>
+          <Text style={styles.emptyTitle}>No matching work orders</Text>
+          <Text style={styles.emptyText}>Try clearing the search text or changing the filters.</Text>
+        </View>
+      )}
+
+      <AppFooter />
     </ScrollView>
   );
 }
@@ -72,9 +86,23 @@ const styles = StyleSheet.create({
   statCard: { flex: 1, backgroundColor: '#ffffff', borderRadius: 16, padding: 14, borderWidth: 1, borderColor: '#e5e7eb' },
   statNumber: { fontSize: 24, fontWeight: '900', color: '#2563eb' },
   statLabel: { marginTop: 3, color: '#64748b', fontWeight: '800', fontSize: 12 },
-  filterRow: { gap: 8, paddingBottom: 14 },
-  filterChip: { backgroundColor: '#ffffff', borderColor: '#e5e7eb', borderWidth: 1, borderRadius: 999, paddingHorizontal: 14, paddingVertical: 9 },
-  filterChipActive: { backgroundColor: '#0f172a', borderColor: '#0f172a' },
-  filterText: { color: '#334155', fontWeight: '800' },
-  filterTextActive: { color: '#ffffff' },
+  emptyBox: {
+    backgroundColor: '#ffffff',
+    borderRadius: 18,
+    padding: 18,
+    borderColor: '#e5e7eb',
+    borderWidth: 1,
+    marginBottom: 16,
+  },
+  emptyTitle: {
+    color: '#111827',
+    fontWeight: '900',
+    fontSize: 17,
+  },
+  emptyText: {
+    color: '#64748b',
+    marginTop: 6,
+    fontWeight: '700',
+    lineHeight: 20,
+  },
 });

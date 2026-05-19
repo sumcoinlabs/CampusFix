@@ -87,6 +87,8 @@ CampusFix currently includes:
 - Follow existing request workflow
 - My Requests list that updates after submission
 - Staff Queue list that updates after submission
+- Request search and filtering
+- Status and priority filters
 - Staff assignment workflow
 - Status updates
 - Public updates
