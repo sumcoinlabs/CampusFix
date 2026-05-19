@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useAppState } from '../context/AppStateContext';
+import { colors, fontSize, fontWeight, radius, spacing } from '../theme/design';
 
 type Props = {
   title: string;
@@ -14,75 +15,85 @@ export function PageBrand({ title, subtitle }: Props) {
     return null;
   }
 
+  const isStaff = currentUser.role === 'staff';
+
   return (
-    <View style={styles.card}>
-      <View style={styles.row}>
-        <View style={styles.icon}>
-          <Text style={styles.check}>✓</Text>
+    <View style={styles.wrapper}>
+      <View style={styles.topRow}>
+        <View>
+          <Text style={styles.eyebrow}>CampusFix</Text>
+          <Text style={styles.title}>{title}</Text>
         </View>
-        <View style={styles.textWrap}>
-          <Text style={styles.appName}>CampusFix</Text>
-          <Text style={styles.role}>
-            {currentUser.role === 'staff' ? 'Staff Admin Workspace' : 'Resident Workspace'}
+
+        <View style={[styles.rolePill, isStaff ? styles.staffPill : styles.residentPill]}>
+          <Text style={[styles.roleText, isStaff ? styles.staffText : styles.residentText]}>
+            {isStaff ? 'Staff Admin' : 'Resident'}
           </Text>
         </View>
       </View>
 
-      <Text style={styles.title}>{title}</Text>
       {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  card: {
-    backgroundColor: '#0f172a',
-    borderRadius: 22,
-    padding: 18,
-    marginBottom: 18,
+  wrapper: {
+    backgroundColor: colors.white,
+    borderRadius: radius.xxl,
+    padding: spacing.section,
+    borderColor: colors.border,
+    borderWidth: 1,
+    marginBottom: spacing.section,
   },
-  row: {
+  topRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    marginBottom: 14,
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    gap: spacing.md,
   },
-  icon: {
-    width: 42,
-    height: 42,
-    borderRadius: 13,
-    backgroundColor: '#2563eb',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  check: {
-    color: '#ffffff',
-    fontSize: 28,
-    fontWeight: '900',
-    marginTop: -2,
-  },
-  textWrap: {
-    flex: 1,
-  },
-  appName: {
-    color: '#ffffff',
-    fontSize: 20,
-    fontWeight: '900',
-  },
-  role: {
-    color: '#93c5fd',
-    fontWeight: '800',
-    marginTop: 2,
+  eyebrow: {
+    color: colors.blue,
+    fontSize: fontSize.sm,
+    fontWeight: fontWeight.black,
+    textTransform: 'uppercase',
+    letterSpacing: 0.8,
+    marginBottom: 4,
   },
   title: {
-    color: '#ffffff',
+    color: colors.text,
     fontSize: 26,
-    fontWeight: '900',
+    fontWeight: fontWeight.black,
+    lineHeight: 32,
   },
   subtitle: {
-    color: '#cbd5e1',
-    marginTop: 6,
+    color: colors.textMuted,
+    marginTop: spacing.sm,
     lineHeight: 21,
-    fontWeight: '600',
+    fontWeight: fontWeight.semibold,
+  },
+  rolePill: {
+    borderRadius: radius.pill,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderWidth: 1,
+  },
+  residentPill: {
+    backgroundColor: colors.blueSoft,
+    borderColor: colors.blueBorder,
+  },
+  staffPill: {
+    backgroundColor: colors.cyanSoft,
+    borderColor: colors.cyanBorder,
+  },
+  roleText: {
+    fontSize: fontSize.sm,
+    fontWeight: fontWeight.black,
+  },
+  residentText: {
+    color: colors.blueText,
+  },
+  staffText: {
+    color: colors.cyanText,
   },
 });
