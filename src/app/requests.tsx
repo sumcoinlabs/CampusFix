@@ -8,6 +8,7 @@ import { PriorityFilter, RequestFilters, StatusFilter } from '../components/Requ
 import { useAppState } from '../context/AppStateContext';
 import { filterRequests } from '../utils/filterRequests';
 import { TopNav } from '../components/TopNav';
+import { StateMessage } from '../components/StateMessage';
 
 export default function MyRequestsScreen() {
   const { requests } = useAppState();

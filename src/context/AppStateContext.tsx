@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
   Account,
   AppNotification,
@@ -240,30 +240,27 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
     AsyncStorage.removeItem(STORAGE_KEY);
   }
 
-  const value = useMemo<AppState>(
-    () => ({
-      currentUser,
-      accounts,
-      requests,
-      pendingRequest,
-      notifications,
-      loginDemo,
-      register,
-      logout,
-      setPendingRequest,
-      createRequest,
-      followRequest,
-      assignToMe,
-      assignRequest,
-      updateStatus,
-      addPublicUpdate,
-      addInternalNote,
-      resetDemo,
-      seedDemoRequests,
-      clearActivity,
-    }),
-    [currentUser, accounts, requests, pendingRequest, notifications]
-  );
+  const value: AppState = {
+    currentUser,
+    accounts,
+    requests,
+    pendingRequest,
+    notifications,
+    loginDemo,
+    register,
+    logout,
+    setPendingRequest,
+    createRequest,
+    followRequest,
+    assignToMe,
+    assignRequest,
+    updateStatus,
+    addPublicUpdate,
+    addInternalNote,
+    resetDemo,
+    seedDemoRequests,
+    clearActivity,
+  };
 
   return <AppStateContext.Provider value={value}>{children}</AppStateContext.Provider>;
 }

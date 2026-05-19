@@ -9,6 +9,7 @@ import { useAppState } from '../context/AppStateContext';
 import { filterRequests } from '../utils/filterRequests';
 import { getRequestMetrics } from '../services/requestService';
 import { TopNav } from '../components/TopNav';
+import { StateMessage } from '../components/StateMessage';
 
 export default function StaffQueueScreen() {
   const { requests } = useAppState();

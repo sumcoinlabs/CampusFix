@@ -3,7 +3,6 @@ import { router } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { AppFooter } from '../components/AppFooter';
 import { PageBrand } from '../components/PageBrand';
-import { useAppState } from '../context/AppStateContext';
 import { TopNav } from '../components/TopNav';
 
 const residentSteps = [
@@ -25,9 +24,6 @@ const staffSteps = [
 ];
 
 export default function WalkthroughScreen() {
-  const { currentUser } = useAppState();
-  const isStaff = currentUser?.role === 'staff';
-
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <TopNav />

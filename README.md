@@ -194,6 +194,20 @@ That service layer handles request creation, following existing requests, staff 
 
 This makes the demo easier to evolve into a backend-backed app later. The local service functions could be replaced with calls to Supabase, Firebase, or an internal REST API without rewriting the screens.
 
+## Quality checks
+
+Run TypeScript validation:
+
+npm run typecheck
+
+Run Expo lint:
+
+npm run lint
+
+Run both:
+
+npm run quality
+
 ## Current limitations
 
 This is still a demo app. It does not yet include:
