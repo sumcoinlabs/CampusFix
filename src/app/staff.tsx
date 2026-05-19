@@ -3,6 +3,7 @@ import { router } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { RequestCard } from '../components/RequestCard';
 import { useAppState } from '../context/AppStateContext';
+import { AppFooter } from '../components/AppFooter';
 
 const filters = ['All', 'High Priority', 'Assigned', 'New', 'Resolved'];
 
@@ -46,7 +47,8 @@ export default function StaffQueueScreen() {
             <Text style={[styles.filterText, filter === item && styles.filterTextActive]}>{item}</Text>
           </Pressable>
         ))}
-      </ScrollView>
+            <AppFooter />
+    </ScrollView>
 
       {filtered.map((request) => (
         <RequestCard
@@ -55,6 +57,7 @@ export default function StaffQueueScreen() {
           onPress={() => router.push({ pathname: '/request-detail', params: { id: request.id, role: 'staff' } } as never)}
         />
       ))}
+          <AppFooter />
     </ScrollView>
   );
 }

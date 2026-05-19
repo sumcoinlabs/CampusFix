@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-
 import { StatusBadge } from '../components/StatusBadge';
 import { useAppState } from '../context/AppStateContext';
 import { UserRole } from '../types';
+import { AppFooter } from '../components/AppFooter';
 
 export default function RequestDetailScreen() {
   const { id, role } = useLocalSearchParams<{ id?: string; role?: UserRole }>();
@@ -203,6 +204,7 @@ export default function RequestDetailScreen() {
           )}
         </View>
       ) : null}
+          <AppFooter />
     </ScrollView>
   );
 }

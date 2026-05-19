@@ -3,6 +3,7 @@ import { router } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { RequestCard } from '../components/RequestCard';
 import { useAppState } from '../context/AppStateContext';
+import { AppFooter } from '../components/AppFooter';
 
 function normalizeWords(value: string) {
   return value
@@ -119,6 +120,7 @@ export default function DuplicateCheckScreen() {
           </Pressable>
         </>
       )}
+          <AppFooter />
     </ScrollView>
   );
 }

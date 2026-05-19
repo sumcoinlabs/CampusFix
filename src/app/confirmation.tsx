@@ -1,6 +1,7 @@
 import React from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { AppFooter } from '../components/AppFooter';
 
 export default function ConfirmationScreen() {
   const { action, id } = useLocalSearchParams<{ action?: string; id?: string }>();
@@ -34,6 +35,7 @@ export default function ConfirmationScreen() {
       <Pressable style={styles.secondaryButton} onPress={() => router.push('/dashboard' as never)}>
         <Text style={styles.secondaryButtonText}>Back to Dashboard</Text>
       </Pressable>
+          <AppFooter />
     </ScrollView>
   );
 }

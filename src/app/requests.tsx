@@ -3,6 +3,7 @@ import { router } from 'expo-router';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { RequestCard } from '../components/RequestCard';
 import { useAppState } from '../context/AppStateContext';
+import { AppFooter } from '../components/AppFooter';
 
 export default function MyRequestsScreen() {
   const { requests } = useAppState();
@@ -26,6 +27,7 @@ export default function MyRequestsScreen() {
           onPress={() => router.push({ pathname: '/request-detail', params: { id: request.id, role: 'resident' } } as never)}
         />
       ))}
+          <AppFooter />
     </ScrollView>
   );
 }

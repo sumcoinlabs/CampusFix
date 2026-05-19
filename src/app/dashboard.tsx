@@ -5,6 +5,7 @@ import { MetricCard } from '../components/MetricCard';
 import { RequestCard } from '../components/RequestCard';
 import { RoleBanner } from '../components/RoleBanner';
 import { useAppState } from '../context/AppStateContext';
+import { AppFooter } from '../components/AppFooter';
 
 function HomeButton({ title, subtitle, route }: { title: string; subtitle: string; route: string }) {
   return (
@@ -80,6 +81,7 @@ export default function DashboardScreen() {
       <Pressable style={styles.signOut} onPress={signOut}>
         <Text style={styles.signOutText}>Sign Out</Text>
       </Pressable>
+          <AppFooter />
     </ScrollView>
   );
 }

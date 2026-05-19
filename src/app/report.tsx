@@ -3,6 +3,7 @@ import { router } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useAppState } from '../context/AppStateContext';
 import { RequestPriority } from '../types';
+import { AppFooter } from '../components/AppFooter';
 
 const categories = ['Lighting', 'Plumbing', 'Safety', 'Cleaning', 'Grounds', 'HVAC'];
 const priorities: RequestPriority[] = ['Low', 'Medium', 'High'];
@@ -75,6 +76,7 @@ export default function ReportIssueScreen() {
       <Pressable style={styles.primaryButton} onPress={continueFlow}>
         <Text style={styles.primaryButtonText}>Continue to Duplicate Check</Text>
       </Pressable>
+          <AppFooter />
     </ScrollView>
   );
 }
