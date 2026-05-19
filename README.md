@@ -1,8 +1,47 @@
-# CampusFix
+<div align="center">
+  <img src="assets/brand/campusfix-logo.svg" alt="CampusFix logo" width="720" />
+
+  <h1>CampusFix</h1>
+
+  <p>
+    A clean-room React Native / Expo demo for two-sided facilities request management.
+  </p>
+
+  <p>
+    <img alt="Platform iOS" src="https://img.shields.io/badge/iOS-supported-111827?style=for-the-badge&logo=apple&logoColor=white" />
+    <img alt="Platform Android" src="https://img.shields.io/badge/Android-supported-16A34A?style=for-the-badge&logo=android&logoColor=white" />
+    <img alt="Platform Web" src="https://img.shields.io/badge/Web-supported-2563EB?style=for-the-badge&logo=googlechrome&logoColor=white" />
+  </p>
+
+  <p>
+    <img alt="Expo" src="https://img.shields.io/badge/Expo-55-000020?style=flat-square&logo=expo&logoColor=white" />
+    <img alt="React Native" src="https://img.shields.io/badge/React_Native-0.83-61DAFB?style=flat-square&logo=react&logoColor=111827" />
+    <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-ready-3178C6?style=flat-square&logo=typescript&logoColor=white" />
+    <img alt="AsyncStorage" src="https://img.shields.io/badge/AsyncStorage-local_persistence-7C3AED?style=flat-square" />
+  </p>
+
+  <p>
+    <img alt="Status" src="https://img.shields.io/badge/status-functional_local_demo-22C55E?style=flat-square" />
+    <img alt="Clean Room" src="https://img.shields.io/badge/clean--room-demo-0F172A?style=flat-square" />
+    <img alt="Backend Ready" src="https://img.shields.io/badge/backend-ready_for_next_phase-F97316?style=flat-square" />
+  </p>
+</div>
+
+## Overview
 
 CampusFix is a clean-room React Native / Expo demo that models a two-sided facilities request workflow.
 
 It is designed as a practical mobile development demo showing how a request-management app can support both public users and internal staff using a cross-platform React Native architecture.
+
+The app intentionally uses a campus/facilities scenario so it remains independent and does not copy any company product, branding, customer implementation, or proprietary system.
+
+## Platform support
+
+CampusFix can run on:
+
+- iOS through Expo Go or iOS Simulator
+- Android through Expo Go or Android Emulator
+- Web through Expo web preview
 
 ## Current status
 
@@ -78,12 +117,6 @@ Staff users can:
 - Expo Router
 - AsyncStorage
 - Local mock data/state
-
-## Why this project exists
-
-The purpose of CampusFix is to demonstrate fast React Native ramp-up, mobile product thinking, and understanding of request-management workflows.
-
-The app intentionally uses a campus/facilities scenario so it remains independent and does not copy any company product, branding, customer implementation, or proprietary system.
 
 ## Example workflow
 

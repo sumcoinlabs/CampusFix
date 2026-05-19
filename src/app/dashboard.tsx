@@ -6,6 +6,7 @@ import { RequestCard } from '../components/RequestCard';
 import { RoleBanner } from '../components/RoleBanner';
 import { useAppState } from '../context/AppStateContext';
 import { AppFooter } from '../components/AppFooter';
+import { CampusFixLogo } from '../components/CampusFixLogo';
 
 function HomeButton({ title, subtitle, route }: { title: string; subtitle: string; route: string }) {
   return (
@@ -35,7 +36,7 @@ export default function DashboardScreen() {
       <RoleBanner role={role} />
 
       <View style={styles.hero}>
-        <Text style={styles.logo}>CampusFix</Text>
+        <CampusFixLogo />
         <Text style={styles.tagline}>Welcome, {currentUser?.name || 'Demo User'}</Text>
         <Text style={styles.heroText}>
           Functional local demo: create requests, follow duplicates, update staff status, and persist changes.

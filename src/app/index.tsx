@@ -3,6 +3,7 @@ import { router } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useAppState } from '../context/AppStateContext';
 import { UserRole } from '../types';
+import { CampusFixLogo } from '../components/CampusFixLogo';
 
 export default function LoginScreen() {
   const { loginDemo, register, resetDemo } = useAppState();
@@ -23,7 +24,7 @@ export default function LoginScreen() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.hero}>
-        <Text style={styles.logo}>CampusFix</Text>
+        <CampusFixLogo />
         <Text style={styles.tagline}>Functional local workflow demo</Text>
         <Text style={styles.heroText}>
           Create requests, update status, follow duplicates, and persist demo data locally.
