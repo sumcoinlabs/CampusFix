@@ -42,6 +42,10 @@ export function AppFooter() {
           <Text style={styles.navText}>Requests</Text>
         </Pressable>
 
+        <Pressable style={styles.navButton} onPress={() => router.push('/walkthrough' as never)}>
+          <Text style={styles.navText}>Walkthrough</Text>
+        </Pressable>
+
         <Pressable style={styles.logoutButton} onPress={signOut}>
           <Text style={styles.logoutText}>Log Out</Text>
         </Pressable>

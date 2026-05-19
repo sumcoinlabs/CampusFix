@@ -69,6 +69,8 @@ export default function DashboardScreen() {
         </>
       ) : null}
 
+      <HomeButton title="Demo Walkthrough" subtitle="Step-by-step guide for reviewing the full resident and staff workflow." route="/walkthrough" />
+
       {role === 'resident' ? (
         <>
           <HomeButton title="Report an Issue" subtitle="Create a real local request that appears in lists." route="/report" />
