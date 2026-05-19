@@ -1,0 +1,40 @@
+import { CampusRequest } from '../types';
+
+export const mockRequests: CampusRequest[] = [
+  {
+    id: 'CF-1042',
+    title: 'Broken lights near Parking Lot B',
+    category: 'Lighting',
+    location: 'Parking Lot B',
+    description: 'Several lights are out near the west side of the parking lot.',
+    status: 'In Progress',
+    priority: 'High',
+    reportedBy: 'Student',
+    createdAt: 'Today',
+    followers: 12,
+  },
+  {
+    id: 'CF-1039',
+    title: 'Water leak in Science Building restroom',
+    category: 'Plumbing',
+    location: 'Science Building - 1st Floor',
+    description: 'Sink has been leaking and water is pooling near the doorway.',
+    status: 'Assigned',
+    priority: 'Medium',
+    reportedBy: 'Faculty',
+    createdAt: 'Yesterday',
+    followers: 4,
+  },
+  {
+    id: 'CF-1032',
+    title: 'Trash overflowing near cafeteria',
+    category: 'Cleaning',
+    location: 'Main Cafeteria',
+    description: 'Outdoor trash bins are full and need pickup.',
+    status: 'Resolved',
+    priority: 'Low',
+    reportedBy: 'Staff',
+    createdAt: 'May 17',
+    followers: 2,
+  },
+];

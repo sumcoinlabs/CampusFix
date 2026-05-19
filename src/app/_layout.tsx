@@ -1,16 +1,22 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { Stack } from 'expo-router';
 import React from 'react';
-import { useColorScheme } from 'react-native';
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+export default function RootLayout() {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AnimatedSplashOverlay />
-      <AppTabs />
-    </ThemeProvider>
+    <Stack
+      screenOptions={{
+        headerStyle: { backgroundColor: '#0f172a' },
+        headerTintColor: '#ffffff',
+        headerTitleStyle: { fontWeight: '800' },
+        contentStyle: { backgroundColor: '#f8fafc' },
+      }}
+    >
+      <Stack.Screen name="index" options={{ title: 'CampusFix' }} />
+      <Stack.Screen name="report" options={{ title: 'Report Issue' }} />
+      <Stack.Screen name="duplicate" options={{ title: 'Similar Issue Found' }} />
+      <Stack.Screen name="requests" options={{ title: 'My Requests' }} />
+      <Stack.Screen name="staff" options={{ title: 'Staff Queue' }} />
+      <Stack.Screen name="request-detail" options={{ title: 'Request Detail' }} />
+    </Stack>
   );
 }

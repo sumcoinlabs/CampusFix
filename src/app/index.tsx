@@ -1,98 +1,127 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React from 'react';
+import { router } from 'expo-router';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+function HomeButton({ title, subtitle, route }: { title: string; subtitle: string; route: string }) {
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
+    <Pressable style={styles.buttonCard} onPress={() => router.push(route as never)}>
+      <Text style={styles.buttonTitle}>{title}</Text>
+      <Text style={styles.buttonSubtitle}>{subtitle}</Text>
+    </Pressable>
   );
 }
 
 export default function HomeScreen() {
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.hero}>
+        <Text style={styles.logo}>CampusFix</Text>
+        <Text style={styles.tagline}>Facility requests made simple.</Text>
+        <Text style={styles.heroText}>
+          A clean-room React Native demo for reporting issues, reducing duplicates,
+          tracking request status, and helping staff manage work orders.
+        </Text>
+      </View>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+      <View style={styles.alertCard}>
+        <Text style={styles.alertLabel}>Campus Notice</Text>
+        <Text style={styles.alertTitle}>Parking Lot B lighting repair is underway</Text>
+        <Text style={styles.alertText}>
+          Maintenance has assigned the issue and updates are available for anyone following the request.
+        </Text>
+      </View>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+      <HomeButton
+        title="Report an Issue"
+        subtitle="Submit a facility problem with location and category."
+        route="/report"
+      />
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+      <HomeButton
+        title="My Requests"
+        subtitle="Track submitted, assigned, in-progress, and resolved items."
+        route="/requests"
+      />
+
+      <HomeButton
+        title="Staff Queue"
+        subtitle="View open work orders by status and priority."
+        route="/staff"
+      />
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    padding: 20,
+    paddingBottom: 40,
   },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+  hero: {
+    backgroundColor: '#0f172a',
+    borderRadius: 24,
+    padding: 22,
+    marginBottom: 18,
   },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+  logo: {
+    color: '#ffffff',
+    fontSize: 34,
+    fontWeight: '900',
   },
-  title: {
-    textAlign: 'center',
+  tagline: {
+    color: '#93c5fd',
+    fontSize: 18,
+    fontWeight: '800',
+    marginTop: 4,
   },
-  code: {
+  heroText: {
+    color: '#cbd5e1',
+    fontSize: 15,
+    lineHeight: 22,
+    marginTop: 14,
+  },
+  alertCard: {
+    backgroundColor: '#eff6ff',
+    borderColor: '#bfdbfe',
+    borderWidth: 1,
+    borderRadius: 20,
+    padding: 16,
+    marginBottom: 16,
+  },
+  alertLabel: {
+    color: '#2563eb',
+    fontSize: 12,
+    fontWeight: '900',
     textTransform: 'uppercase',
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+  alertTitle: {
+    color: '#1e3a8a',
+    fontSize: 17,
+    fontWeight: '900',
+    marginTop: 6,
+  },
+  alertText: {
+    color: '#334155',
+    marginTop: 6,
+    lineHeight: 20,
+  },
+  buttonCard: {
+    backgroundColor: '#ffffff',
+    borderRadius: 20,
+    padding: 18,
+    marginBottom: 14,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+  },
+  buttonTitle: {
+    fontSize: 19,
+    fontWeight: '900',
+    color: '#111827',
+  },
+  buttonSubtitle: {
+    marginTop: 5,
+    color: '#475569',
+    fontSize: 14,
+    lineHeight: 20,
   },
 });
