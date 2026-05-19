@@ -2,11 +2,11 @@ import React from 'react';
 import { router, usePathname } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useAppState } from '../context/AppStateContext';
+import { colors, fontSize, fontWeight, radius, spacing } from '../theme/design';
 
 type NavItem = {
   label: string;
   route: string;
-  primary?: boolean;
 };
 
 export function TopNav() {
@@ -35,9 +35,7 @@ export function TopNav() {
   ];
 
   function isActive(route: string) {
-    if (route === '/dashboard') {
-      return pathname === '/dashboard';
-    }
+    if (route === '/dashboard') return pathname === '/dashboard';
 
     if (route === '/report') {
       return pathname === '/report' || pathname === '/duplicate' || pathname === '/confirmation';
@@ -52,45 +50,41 @@ export function TopNav() {
 
   return (
     <View style={styles.wrapper}>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.navRow}
-      >
-        {navItems.map((item) => {
-          const active = isActive(item.route);
+      <View style={styles.navShell}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.navRow}
+        >
+          {navItems.map((item) => {
+            const active = isActive(item.route);
 
-          return (
-            <Pressable
-              key={item.route}
-              style={[
-                styles.navButton,
-                active && styles.activeButton,
-              ]}
-              onPress={() => router.push(item.route as never)}
-            >
-              <Text
-                style={[
-                  styles.navText,
-                  active && styles.activeText,
-                ]}
+            return (
+              <Pressable
+                key={item.route}
+                style={[styles.navItem, active && styles.navItemActive]}
+                onPress={() => router.push(item.route as never)}
               >
-                {item.label}
-              </Text>
-            </Pressable>
-          );
-        })}
+                <Text style={[styles.navText, active && styles.navTextActive]}>
+                  {item.label}
+                </Text>
+                {active ? <View style={styles.activeLine} /> : null}
+              </Pressable>
+            );
+          })}
+        </ScrollView>
 
-        <Pressable style={styles.logoutButton} onPress={signOut}>
+        <Pressable style={styles.logoutAction} onPress={signOut}>
           <Text style={styles.logoutText}>Log Out</Text>
         </Pressable>
-      </ScrollView>
+      </View>
 
-      <View style={styles.roleCard}>
-        <Text style={styles.roleTitle}>Current Role</Text>
+      <View style={styles.roleStrip}>
         <Text style={styles.roleText}>
-          You are signed in as {currentUser.name} in the {isStaff ? 'Staff Admin' : 'Resident'} workspace.
+          {isStaff ? 'Staff Admin' : 'Resident'} workspace
         </Text>
+        <Text style={styles.roleDivider}>•</Text>
+        <Text style={styles.userText}>{currentUser.name}</Text>
       </View>
     </View>
   );
@@ -98,61 +92,87 @@ export function TopNav() {
 
 const styles = StyleSheet.create({
   wrapper: {
-    marginBottom: 16,
+    marginBottom: spacing.section,
+  },
+  navShell: {
+    backgroundColor: colors.white,
+    borderColor: colors.border,
+    borderWidth: 1,
+    borderRadius: radius.xxl,
+    padding: spacing.sm,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
   },
   navRow: {
-    gap: 8,
-    paddingBottom: 12,
+    gap: spacing.xs,
+    alignItems: 'center',
+    paddingRight: spacing.sm,
   },
-  navButton: {
-    backgroundColor: '#ffffff',
-    borderColor: '#e5e7eb',
-    borderWidth: 1,
-    borderRadius: 999,
-    paddingHorizontal: 14,
+  navItem: {
+    borderRadius: radius.lg,
+    paddingHorizontal: spacing.md,
     paddingVertical: 10,
+    position: 'relative',
+  },
+  navItemActive: {
+    backgroundColor: colors.blueSoft,
   },
   navText: {
-    color: '#334155',
-    fontWeight: '900',
-    fontSize: 13,
+    color: colors.textMuted,
+    fontWeight: fontWeight.black,
+    fontSize: fontSize.sm,
   },
-  activeButton: {
-    backgroundColor: '#2563eb',
-    borderColor: '#2563eb',
+  navTextActive: {
+    color: colors.blueText,
   },
-  activeText: {
-    color: '#ffffff',
+  activeLine: {
+    position: 'absolute',
+    left: spacing.md,
+    right: spacing.md,
+    bottom: 4,
+    height: 3,
+    borderRadius: radius.pill,
+    backgroundColor: colors.blue,
   },
-  logoutButton: {
-    backgroundColor: '#fee2e2',
-    borderColor: '#fecaca',
+  logoutAction: {
+    backgroundColor: colors.redSoft,
+    borderColor: colors.redBorder,
     borderWidth: 1,
-    borderRadius: 999,
-    paddingHorizontal: 14,
+    borderRadius: radius.lg,
+    paddingHorizontal: spacing.md,
     paddingVertical: 10,
   },
   logoutText: {
-    color: '#b91c1c',
-    fontWeight: '900',
-    fontSize: 13,
+    color: colors.redText,
+    fontWeight: fontWeight.black,
+    fontSize: fontSize.sm,
   },
-  roleCard: {
-    backgroundColor: '#eff6ff',
-    borderColor: '#bfdbfe',
+  roleStrip: {
+    marginTop: spacing.sm,
+    backgroundColor: colors.page,
+    borderColor: colors.border,
     borderWidth: 1,
-    borderRadius: 18,
-    padding: 14,
-  },
-  roleTitle: {
-    color: '#1d4ed8',
-    fontWeight: '900',
-    fontSize: 15,
+    borderRadius: radius.lg,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: spacing.sm,
   },
   roleText: {
-    color: '#334155',
-    marginTop: 4,
-    fontWeight: '700',
-    lineHeight: 20,
+    color: colors.blueText,
+    fontWeight: fontWeight.black,
+    fontSize: fontSize.sm,
+  },
+  roleDivider: {
+    color: colors.textLight,
+    fontWeight: fontWeight.black,
+  },
+  userText: {
+    color: colors.textMuted,
+    fontWeight: fontWeight.bold,
+    fontSize: fontSize.sm,
   },
 });
