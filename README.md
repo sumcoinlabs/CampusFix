@@ -77,7 +77,10 @@ CampusFix currently includes:
 - Demo staff/admin login
 - Local demo account creation
 - Header logout on logged-in screens
-- Footer navigation on logged-in screens
+- CampusFix favicon/tab icon
+- Footer logout on logged-in screens
+- Top navigation bar for logged-in screens
+- Current role indicator under navigation
 - Resident vs. staff role separation
 - Request creation
 - Step indicator for resident request flow
@@ -115,7 +118,7 @@ Residents can:
 - Submit a new request
 - View public request updates
 - Track request status
-- Navigate using the footer
+- Navigate using the top navigation bar
 - Log out from the header or footer
 
 ### Staff Admin
@@ -133,7 +136,7 @@ Staff users can:
 - Mark a request resolved
 - Post a public update visible to residents
 - Add an internal staff note
-- Navigate using the footer
+- Navigate using the top navigation bar
 - Log out from the header or footer
 
 ## Tech stack

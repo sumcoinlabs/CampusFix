@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { AppFooter } from '../components/AppFooter';
 import { PageBrand } from '../components/PageBrand';
 import { StepIndicator } from '../components/StepIndicator';
+import { TopNav } from '../components/TopNav';
 
 export default function ConfirmationScreen() {
   const { action, id } = useLocalSearchParams<{ action?: string; id?: string }>();
@@ -11,6 +12,7 @@ export default function ConfirmationScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <TopNav />
       <PageBrand title="Confirmation" subtitle="The request workflow has been updated successfully." />
 
       <StepIndicator currentStep={3} />

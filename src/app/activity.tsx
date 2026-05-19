@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { AppFooter } from '../components/AppFooter';
 import { PageBrand } from '../components/PageBrand';
 import { useAppState } from '../context/AppStateContext';
+import { TopNav } from '../components/TopNav';
 
 export default function ActivityScreen() {
   const { notifications, requests } = useAppState();
@@ -12,6 +13,7 @@ export default function ActivityScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <TopNav />
       <PageBrand
         title="Activity Log"
         subtitle="Local in-app activity showing request creation, staff actions, updates, and status changes."

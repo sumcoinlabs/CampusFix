@@ -7,6 +7,7 @@ import { RequestCard } from '../components/RequestCard';
 import { PriorityFilter, RequestFilters, StatusFilter } from '../components/RequestFilters';
 import { useAppState } from '../context/AppStateContext';
 import { filterRequests } from '../utils/filterRequests';
+import { TopNav } from '../components/TopNav';
 
 export default function MyRequestsScreen() {
   const { requests } = useAppState();
@@ -18,6 +19,7 @@ export default function MyRequestsScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <TopNav />
       <PageBrand
         title="My Requests"
         subtitle="Track submitted and followed requests with public updates."

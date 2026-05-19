@@ -6,6 +6,7 @@ import { PageBrand } from '../components/PageBrand';
 import { StepIndicator } from '../components/StepIndicator';
 import { useAppState } from '../context/AppStateContext';
 import { RequestPriority } from '../types';
+import { TopNav } from '../components/TopNav';
 
 const categories = ['Lighting', 'Plumbing', 'Safety', 'Cleaning', 'Grounds', 'HVAC'];
 const priorities: RequestPriority[] = ['Low', 'Medium', 'High'];
@@ -58,6 +59,7 @@ export default function ReportIssueScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <TopNav />
       <PageBrand
         title="Report Issue"
         subtitle="Create a local request with category, location, priority, and details."

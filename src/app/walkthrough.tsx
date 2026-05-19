@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { AppFooter } from '../components/AppFooter';
 import { PageBrand } from '../components/PageBrand';
 import { useAppState } from '../context/AppStateContext';
+import { TopNav } from '../components/TopNav';
 
 const residentSteps = [
   'Continue as Resident or create a local resident demo account.',
@@ -29,6 +30,7 @@ export default function WalkthroughScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <TopNav />
       <PageBrand
         title="Demo Walkthrough"
         subtitle="A guided path for reviewing the full CampusFix request workflow."
@@ -73,14 +75,6 @@ export default function WalkthroughScreen() {
         <Pressable style={styles.darkButton} onPress={() => router.push('/staff' as never)}>
           <Text style={styles.primaryButtonText}>Open Staff Queue</Text>
         </Pressable>
-      </View>
-
-      <View style={styles.noteCard}>
-        <Text style={styles.noteTitle}>Current Role</Text>
-        <Text style={styles.bodyText}>
-          You are signed in as {currentUser?.name || 'Demo User'} in the{' '}
-          {isStaff ? 'Staff Admin' : 'Resident'} workspace.
-        </Text>
       </View>
 
       <AppFooter />

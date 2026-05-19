@@ -6,6 +6,7 @@ import { useAppState } from '../context/AppStateContext';
 import { AppFooter } from '../components/AppFooter';
 import { PageBrand } from '../components/PageBrand';
 import { StepIndicator } from '../components/StepIndicator';
+import { TopNav } from '../components/TopNav';
 
 function normalizeWords(value: string) {
   return value
@@ -62,6 +63,7 @@ export default function DuplicateCheckScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <TopNav />
       <PageBrand title="Duplicate Check" subtitle="Compare the new request against existing local reports before submitting." />
 
       <StepIndicator currentStep={2} />

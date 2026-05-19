@@ -6,12 +6,14 @@ import { useAppState } from '../context/AppStateContext';
 import { UserRole } from '../types';
 import { AppFooter } from '../components/AppFooter';
 import { PageBrand } from '../components/PageBrand';
+import { TopNav } from '../components/TopNav';
 
 export default function RequestDetailScreen() {
   const { id, role } = useLocalSearchParams<{ id?: string; role?: UserRole }>();
   const {
     requests,
     assignToMe,
+    assignRequest,
     updateStatus,
     addPublicUpdate,
     addInternalNote,
@@ -20,6 +22,15 @@ export default function RequestDetailScreen() {
   const [publicMessage, setPublicMessage] = useState('');
   const [internalMessage, setInternalMessage] = useState('');
   const [lastAction, setLastAction] = useState('');
+
+  const assigneeOptions = [
+    'Facilities - Day Crew',
+    'Facilities - Evening Crew',
+    'Plumbing Vendor',
+    'Custodial Team',
+    'Safety Team',
+    'Grounds Crew',
+  ];
 
   const request = requests.find((item) => item.id === id) || requests[0];
   const isStaff = role === 'staff';
@@ -48,7 +59,18 @@ export default function RequestDetailScreen() {
     refreshStaffDetail();
   }
 
+  function handleAssignTo(assignee: string) {
+    assignRequest(request.id, assignee);
+    setLastAction(`Request assigned to ${assignee}.`);
+    refreshStaffDetail();
+  }
+
   function handleProgress() {
+    if (request.assignee === 'Unassigned') {
+      setLastAction('Assign this request before marking it in progress.');
+      return;
+    }
+
     updateStatus(request.id, 'In Progress');
     setLastAction('Request marked in progress.');
     refreshStaffDetail();
@@ -90,6 +112,7 @@ export default function RequestDetailScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <TopNav />
       <PageBrand title="Request Detail" subtitle="View request information, updates, notes, and staff actions." />
       <Text style={styles.id}>{request.id}</Text>
       <Text style={styles.heading}>{request.title}</Text>
@@ -139,13 +162,59 @@ export default function RequestDetailScreen() {
               <Text style={styles.actionText}>Assign to Me</Text>
             </Pressable>
 
-            <Pressable style={styles.actionButton} onPress={handleProgress}>
-              <Text style={styles.actionText}>Mark In Progress</Text>
+            <Pressable
+              style={[
+                styles.actionButton,
+                request.assignee === 'Unassigned' && styles.actionButtonDisabled,
+              ]}
+              onPress={handleProgress}
+            >
+              <Text
+                style={[
+                  styles.actionText,
+                  request.assignee === 'Unassigned' && styles.actionTextDisabled,
+                ]}
+              >
+                Mark In Progress
+              </Text>
             </Pressable>
 
             <Pressable style={styles.resolveButton} onPress={handleResolved}>
               <Text style={styles.resolveText}>Mark Resolved</Text>
             </Pressable>
+          </View>
+
+          <View style={styles.assignmentPanel}>
+            <Text style={styles.assignmentTitle}>Assign to Team or Vendor</Text>
+            <Text style={styles.assignmentHelp}>
+              Choose the group responsible for the next action.
+            </Text>
+
+            <View style={styles.assigneeGrid}>
+              {assigneeOptions.map((assignee) => {
+                const selected = request.assignee === assignee;
+
+                return (
+                  <Pressable
+                    key={assignee}
+                    style={[
+                      styles.assigneeChip,
+                      selected && styles.assigneeChipActive,
+                    ]}
+                    onPress={() => handleAssignTo(assignee)}
+                  >
+                    <Text
+                      style={[
+                        styles.assigneeText,
+                        selected && styles.assigneeTextActive,
+                      ]}
+                    >
+                      {assignee}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
           </View>
 
           <View style={styles.updateComposer}>
@@ -315,6 +384,13 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     textAlign: 'center',
   },
+  actionButtonDisabled: {
+    backgroundColor: '#f1f5f9',
+    borderColor: '#cbd5e1',
+  },
+  actionTextDisabled: {
+    color: '#94a3b8',
+  },
   resolveButton: {
     width: '100%',
     backgroundColor: '#16a34a',
@@ -325,6 +401,50 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontWeight: '900',
     textAlign: 'center',
+  },
+  assignmentPanel: {
+    marginTop: 16,
+    backgroundColor: '#ffffff',
+    borderRadius: 18,
+    padding: 14,
+    borderColor: '#a5f3fc',
+    borderWidth: 1,
+  },
+  assignmentTitle: {
+    color: '#164e63',
+    fontWeight: '900',
+    fontSize: 16,
+  },
+  assignmentHelp: {
+    color: '#475569',
+    marginTop: 4,
+    marginBottom: 10,
+    fontWeight: '700',
+  },
+  assigneeGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  assigneeChip: {
+    backgroundColor: '#f8fafc',
+    borderColor: '#e5e7eb',
+    borderWidth: 1,
+    borderRadius: 999,
+    paddingHorizontal: 12,
+    paddingVertical: 9,
+  },
+  assigneeChipActive: {
+    backgroundColor: '#2563eb',
+    borderColor: '#2563eb',
+  },
+  assigneeText: {
+    color: '#334155',
+    fontWeight: '800',
+    fontSize: 12,
+  },
+  assigneeTextActive: {
+    color: '#ffffff',
   },
   updateComposer: {
     marginTop: 16,

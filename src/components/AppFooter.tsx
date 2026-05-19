@@ -23,37 +23,9 @@ export function AppFooter() {
         Signed in as {currentUser.name} • {isStaff ? 'Staff Admin' : 'Resident'}
       </Text>
 
-      <View style={styles.navGrid}>
-        <Pressable style={styles.navButton} onPress={() => router.push('/dashboard' as never)}>
-          <Text style={styles.navText}>Dashboard</Text>
-        </Pressable>
-
-        {!isStaff ? (
-          <Pressable style={styles.navButton} onPress={() => router.push('/report' as never)}>
-            <Text style={styles.navText}>New Request</Text>
-          </Pressable>
-        ) : (
-          <Pressable style={styles.navButton} onPress={() => router.push('/staff' as never)}>
-            <Text style={styles.navText}>Staff Queue</Text>
-          </Pressable>
-        )}
-
-        <Pressable style={styles.navButton} onPress={() => router.push('/requests' as never)}>
-          <Text style={styles.navText}>Requests</Text>
-        </Pressable>
-
-        <Pressable style={styles.navButton} onPress={() => router.push('/walkthrough' as never)}>
-          <Text style={styles.navText}>Walkthrough</Text>
-        </Pressable>
-
-        <Pressable style={styles.navButton} onPress={() => router.push('/activity' as never)}>
-          <Text style={styles.navText}>Activity</Text>
-        </Pressable>
-
-        <Pressable style={styles.logoutButton} onPress={signOut}>
-          <Text style={styles.logoutText}>Log Out</Text>
-        </Pressable>
-      </View>
+      <Pressable style={styles.logoutButton} onPress={signOut}>
+        <Text style={styles.logoutText}>Log Out</Text>
+      </Pressable>
     </View>
   );
 }
@@ -71,37 +43,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 12,
   },
-  navGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 10,
-  },
-  navButton: {
-    flexGrow: 1,
-    minWidth: '45%',
-    backgroundColor: '#ffffff',
-    borderColor: '#e5e7eb',
-    borderWidth: 1,
-    borderRadius: 14,
-    padding: 13,
-    alignItems: 'center',
-  },
-  navText: {
-    color: '#334155',
-    fontWeight: '900',
-  },
   logoutButton: {
-    flexGrow: 1,
-    minWidth: '45%',
     backgroundColor: '#fee2e2',
     borderColor: '#fecaca',
     borderWidth: 1,
-    borderRadius: 14,
-    padding: 13,
+    borderRadius: 16,
+    padding: 14,
     alignItems: 'center',
   },
   logoutText: {
     color: '#b91c1c',
     fontWeight: '900',
+    fontSize: 15,
   },
 });

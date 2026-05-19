@@ -8,6 +8,7 @@ import { PriorityFilter, RequestFilters, StatusFilter } from '../components/Requ
 import { useAppState } from '../context/AppStateContext';
 import { filterRequests } from '../utils/filterRequests';
 import { getRequestMetrics } from '../services/requestService';
+import { TopNav } from '../components/TopNav';
 
 export default function StaffQueueScreen() {
   const { requests } = useAppState();
@@ -20,6 +21,7 @@ export default function StaffQueueScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <TopNav />
       <PageBrand
         title="Staff Queue"
         subtitle="Review, assign, update, and resolve incoming work orders."

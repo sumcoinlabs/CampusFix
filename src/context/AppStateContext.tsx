@@ -31,6 +31,7 @@ type AppState = {
   createRequest: (request?: PendingRequest | null) => string;
   followRequest: (id: string) => void;
   assignToMe: (id: string) => void;
+  assignRequest: (id: string, assignee: string) => void;
   updateStatus: (id: string, status: RequestStatus) => void;
   addPublicUpdate: (id: string, message: string) => void;
   addInternalNote: (id: string, message: string) => void;
@@ -144,6 +145,11 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
     pushNotification(`Assigned request ${id}.`);
   }
 
+  function assignRequest(id: string, assignee: string) {
+    setRequests((items) => assignRequestToStaff(items, id, assignee));
+    pushNotification(`Assigned request ${id} to ${assignee}.`);
+  }
+
   function updateStatus(id: string, status: RequestStatus) {
     setRequests((items) =>
       updateRequestStatus(items, id, status, currentUser?.name || 'Facilities Team')
@@ -188,6 +194,7 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       createRequest,
       followRequest,
       assignToMe,
+      assignRequest,
       updateStatus,
       addPublicUpdate,
       addInternalNote,
