@@ -27,6 +27,14 @@
   </p>
 </div>
 
+## Preview
+
+<p align="center">
+  <img src="assets/screenshots/login.png" width="220" alt="CampusFix login screen" />
+  <img src="assets/screenshots/resident-flow.png" width="220" alt="CampusFix resident request flow" />
+  <img src="assets/screenshots/staff-detail.png" width="220" alt="CampusFix staff request detail" />
+</p>
+
 ## Overview
 
 CampusFix is a clean-room React Native / Expo demo that models a two-sided facilities request workflow.
