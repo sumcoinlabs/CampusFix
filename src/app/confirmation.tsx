@@ -3,6 +3,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { AppFooter } from '../components/AppFooter';
 import { PageBrand } from '../components/PageBrand';
+import { StepIndicator } from '../components/StepIndicator';
 
 export default function ConfirmationScreen() {
   const { action, id } = useLocalSearchParams<{ action?: string; id?: string }>();
@@ -11,6 +12,8 @@ export default function ConfirmationScreen() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <PageBrand title="Confirmation" subtitle="The request workflow has been updated successfully." />
+
+      <StepIndicator currentStep={3} />
       <View style={styles.successCircle}>
         <Text style={styles.check}>✓</Text>
       </View>

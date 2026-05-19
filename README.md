@@ -80,6 +80,7 @@ CampusFix currently includes:
 - Footer navigation on logged-in screens
 - Resident vs. staff role separation
 - Request creation
+- Step indicator for resident request flow
 - Duplicate issue detection
 - Follow existing request workflow
 - My Requests list that updates after submission
