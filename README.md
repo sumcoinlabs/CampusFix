@@ -24,6 +24,7 @@
     <img alt="Status" src="https://img.shields.io/badge/status-functional_local_demo-22C55E?style=flat-square" />
     <img alt="Clean Room" src="https://img.shields.io/badge/clean--room-demo-0F172A?style=flat-square" />
     <img alt="Backend Ready" src="https://img.shields.io/badge/backend-ready_for_next_phase-F97316?style=flat-square" />
+    <img alt="License" src="https://img.shields.io/badge/License-Proprietary-red?style=flat-square" />
   </p>
 </div>
 
@@ -223,6 +224,14 @@ npm run lint
 Run both:
 
 npm run quality
+
+## License
+
+CampusFix is proprietary software.
+
+This repository is provided for portfolio, demonstration, and evaluation purposes only. No permission is granted to copy, modify, distribute, sublicense, publish, sell, host, deploy, or use this software for commercial or production purposes without prior written permission.
+
+See `LICENSE` for details.
 
 ## Current limitations
 
