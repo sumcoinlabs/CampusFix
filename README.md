@@ -51,22 +51,16 @@
 
 These screenshots were captured from the Android emulator to show the app running in a mobile environment.
 
-### Android app loading
-
 <p align="center">
-  <img src="assets/screenshots/android/android-load.png" width="360" alt="CampusFix Android loading screen" />
+  <img src="assets/screenshots/android/android-load.png" width="220" alt="CampusFix Android loading screen" />
+  <img src="assets/screenshots/android/android-login.png" width="220" alt="CampusFix Android login screen" />
+  <img src="assets/screenshots/android/android-staff.png" width="220" alt="CampusFix Android staff workflow" />
 </p>
 
-### Android login and role selection
-
 <p align="center">
-  <img src="assets/screenshots/android/android-login.png" width="360" alt="CampusFix Android login screen" />
-</p>
-
-### Android staff workflow
-
-<p align="center">
-  <img src="assets/screenshots/android/android-staff.png" width="360" alt="CampusFix Android staff workflow" />
+  <strong>Loading</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <strong>Login</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <strong>Staff Workflow</strong>
 </p>
 
 ## Overview
