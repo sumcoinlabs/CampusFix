@@ -47,6 +47,28 @@
   <img src="assets/screenshots/staff-detail.png" width="720" alt="CampusFix staff queue and request management screen" />
 </p>
 
+## Android Emulator Preview
+
+These screenshots were captured from the Android emulator to show the app running in a mobile environment.
+
+### Android app loading
+
+<p align="center">
+  <img src="assets/screenshots/android/android-load.png" width="360" alt="CampusFix Android loading screen" />
+</p>
+
+### Android login and role selection
+
+<p align="center">
+  <img src="assets/screenshots/android/android-login.png" width="360" alt="CampusFix Android login screen" />
+</p>
+
+### Android staff workflow
+
+<p align="center">
+  <img src="assets/screenshots/android/android-staff.png" width="360" alt="CampusFix Android staff workflow" />
+</p>
+
 ## Overview
 
 CampusFix is a clean-room React Native / Expo demo that models a two-sided facilities request workflow.
